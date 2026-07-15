@@ -25,6 +25,17 @@ return Application::configure(basePath: dirname(__DIR__))
             'role' => RoleMiddleware::class,
         ]);
 
+        /*
+        |--------------------------------------------------------------------------
+        | Trust Proxies (Railway)
+        |--------------------------------------------------------------------------
+        | Railway menangani SSL/HTTPS di level proxy, bukan di dalam container.
+        | Middleware ini memberi tahu Laravel untuk percaya header dari proxy
+        | tersebut, supaya request terdeteksi sebagai HTTPS dengan benar.
+        */
+
+        $middleware->trustProxies(at: '*');
+
     })
 
     ->withExceptions(function (Exceptions $exceptions): void {
