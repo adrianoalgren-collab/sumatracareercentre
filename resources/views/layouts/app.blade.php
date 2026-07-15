@@ -8,7 +8,7 @@
     {{-- VITE (WAJIB) --}}
     @vite(['resources/css/sidebar.css', 'resources/js/app.js'])
     @vite(['resources/css/content.css', 'resources/js/app.js'])
-    @vite(['resources/css/Pelamar.css', 'resources/js/app.js'])
+    @vite(['resources/css/pelamar.css', 'resources/js/app.js'])
 
     {{-- FONT AWESOME --}}
     <link rel="stylesheet"
