@@ -1,0 +1,149 @@
+/* ============================================================
+   register.css — override & style KHUSUS halaman register.
+   File ini TIDAK berdiri sendiri. Halaman register masih wajib
+   memuat style.css (global design system) karena bergantung pada
+   selector-selector berikut yang didefinisikan di sana:
+
+   - Fondasi: :root, reset, body, scrollbar
+   - Navbar: nav, .nav-* (dipakai oleh <x-navbar>)
+   - Hero base: .hero, .hero-bg, .hero-img, .hero-geo*,
+     .hero-content, .hero-label*, .hero-title (+ em), .hero-desc
+   - Kartu: .hero-card (+ @keyframes float), .hero-card-label
+   - Heading: .job-title
+   - Tombol: .btn-hero-main (+ :hover)
+   - Stats row: .stats-row, .stat, .stat-num, .stat-div
+   - Form: .field-row, .field-group (+ label, input, :focus,
+     ::placeholder)
+   - Footer note: .register-note (+ a)
+   - Responsive: media query 768px & 1024px terkait selector di atas
+
+   Urutan load yang benar di Blade:
+   @vite(['resources/css/app.css', 'resources/css/style.css',
+          'resources/css/register.css', ...])
+   (style.css duluan, register.css belakangan supaya override
+   di bawah ini menang)
+============================================================ */
+
+/* ===== Override khusus halaman register: bikin muat 1 layar ===== */
+
+html,
+body {
+    height: 100%;
+}
+
+.register-page.hero {
+    height: 100vh;
+    min-height: 100vh;
+    max-height: 100vh;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    padding: 0;
+}
+
+.register-page .hero-content {
+    width: 100%;
+    gap: 40px;
+}
+
+/* Judul & deskripsi dipadatkan */
+.register-page .hero-title {
+    font-size: clamp(1.9rem, 3vw, 2.6rem);
+    line-height: 1.15;
+    margin-bottom: 12px;
+}
+
+.register-page .hero-desc {
+    font-size: 0.92rem;
+    line-height: 1.5;
+    margin-bottom: 20px;
+    max-width: 420px;
+}
+
+.register-page .stats-row {
+    margin-top: 20px;
+}
+
+.register-page .stat-num {
+    font-size: 1.4rem;
+}
+
+/* Kartu form dipadatkan */
+.register-page .hero-card {
+    padding: 26px 30px;
+    max-height: 92vh;
+    overflow-y: auto;
+}
+
+.register-page .hero-card-label {
+    font-size: 0.75rem;
+    margin-bottom: 4px;
+}
+
+.register-page .hero-card h2 {
+    font-size: 1.35rem;
+    margin-bottom: 4px !important;
+}
+
+.register-page .hero-card > p {
+    font-size: 0.82rem !important;
+    margin-bottom: 16px !important;
+}
+
+.register-page .field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.register-page .field-group {
+    margin-bottom: 12px;
+}
+
+.register-page .field-group label {
+    font-size: 0.78rem;
+    margin-bottom: 4px;
+    display: block;
+}
+
+.register-page .field-group input {
+    padding: 10px 14px;
+    font-size: 0.9rem;
+}
+
+.register-page .btn-hero-main {
+    padding: 12px;
+    margin-top: 4px;
+    font-size: 0.92rem;
+}
+
+.register-page .register-note {
+    margin-top: 14px;
+    font-size: 0.85rem;
+}
+
+.field-error {
+    color: #ffb4b4;
+    font-size: 0.72rem;
+    margin-top: 4px;
+}
+
+.hero-card-alert {
+    background: rgba(220, 53, 69, 0.15);
+    border: 1px solid rgba(220, 53, 69, 0.4);
+    color: #ffd2d2;
+    padding: 10px 14px;
+    border-radius: 10px;
+    margin-bottom: 14px;
+    font-size: 0.8rem;
+}
+
+/* Kalau layar memang terlalu pendek (misal HP kecil landscape),
+   izinkan kartu scroll internal saja daripada memaksa 1 layar penuh */
+@media (max-height: 700px) {
+    .register-page.hero {
+        height: auto;
+        min-height: 100vh;
+        padding: 24px 0;
+    }
+}
