@@ -10,7 +10,7 @@
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800;900&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap"
         rel="stylesheet" />
 
-    @vite(['resources/css/app.css', 'resources/css/login.css', 'resources/js/app.js', 'resources/js/Login.js'])
+    @vite(['resources/css/app.css', 'resources/css/login.css', 'resources/js/app.js', 'resources/js/login.js'])
 </head>
 
 <body>
