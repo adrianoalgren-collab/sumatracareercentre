@@ -25,7 +25,7 @@ class PelamarController extends Controller
 
         $pelamar = $query->latest()->paginate(10)->withQueryString();
 
-        return view('pelamar.indexPelamar', compact('pelamar'));
+        return view('Pelamar.indexPelamar', compact('pelamar'));
     }
 
     /**
@@ -33,7 +33,7 @@ class PelamarController extends Controller
      */
     public function create()
     {
-        return view('pelamar.tambahPelamar');
+        return view('Pelamar.tambahPelamar');
     }
 
     /**
@@ -90,7 +90,7 @@ class PelamarController extends Controller
     {
         $pelamar = User::where('role', 'pelamar')->findOrFail($id);
 
-        return view('pelamar.editPelamar', compact('pelamar'));
+        return view('Pelamar.editPelamar', compact('pelamar'));
     }
 
     /**
