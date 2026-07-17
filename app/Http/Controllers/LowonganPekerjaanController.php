@@ -15,8 +15,7 @@ class LowonganPekerjaanController extends Controller
     */
     public function index(Request $request)
 {
-    $query = LowonganPekerjaan::with('perusahaan')
-        ->where('status_lowongan', 'aktif');
+    $query = LowonganPekerjaan::with('perusahaan');
 
     /*
     |----------------------------------------------------------------

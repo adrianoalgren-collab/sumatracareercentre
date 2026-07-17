@@ -58,7 +58,7 @@ class ArtikelController extends Controller
             ->take(3)
             ->get();
 
-        return view('artikel.indexDetailArtikel', compact('artikel', 'related'));
+        return view('Artikel.indexDetailArtikel', compact('artikel', 'related'));
     }
 
     /*
