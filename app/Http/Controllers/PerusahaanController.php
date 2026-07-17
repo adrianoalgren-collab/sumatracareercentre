@@ -28,7 +28,7 @@ class PerusahaanController extends Controller
 
         $perusahaan = $query->latest()->paginate(10)->withQueryString();
 
-        return view('perusahaan.indexPerusahaan', compact('perusahaan'));
+        return view('Perusahaan.indexPerusahaan', compact('perusahaan'));
     }
 
     /**
@@ -36,7 +36,7 @@ class PerusahaanController extends Controller
      */
     public function create()
     {
-        return view('perusahaan.tambahPerusahaan');
+        return view('Perusahaan.tambahPerusahaan');
     }
 
     /**
@@ -84,7 +84,7 @@ class PerusahaanController extends Controller
     {
         $perusahaan = Perusahaan::findOrFail($id);
 
-        return view('perusahaan.editPerusahaan', compact('perusahaan'));
+        return view('Perusahaan.editPerusahaan', compact('perusahaan'));
     }
 
     /**
