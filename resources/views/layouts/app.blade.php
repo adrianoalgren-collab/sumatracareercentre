@@ -13,6 +13,10 @@
     {{-- FONT AWESOME --}}
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    {{-- PENTING: tanpa @stack('styles') ini, semua @push('styles')
+         dari child view (termasuk pelamar.blade.php) tidak pernah dirender --}}
+    @stack('styles')
 </head>
 
 <body class="app-body">
@@ -32,6 +36,13 @@
     >
         @yield('content')
     </div>
+
+    {{-- PENTING: tanpa @stack('scripts') ini, semua @push('scripts')
+         dari child view (termasuk fungsi ubahStatusLangsung, handler bulk
+         form, checkAll, dsb di pelamar.blade.php) tidak pernah dirender,
+         sehingga tombol/dropdown ganti status terlihat ada tapi tidak
+         benar-benar berfungsi sama sekali. --}}
+    @stack('scripts')
 
 </body>
 </html>

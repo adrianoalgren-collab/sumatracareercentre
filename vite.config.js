@@ -33,6 +33,7 @@ export default defineConfig({
                 'resources/js/modal-konfirmasi-hapus.js',
                 'resources/js/modal-success.js',
                 'resources/js/register.js',
+                'resources/js/pelamar.js',
                 // tambahkan file js lain kalau ada yang belum ke-scroll di screenshot
             ],
             refresh: true,

@@ -9,6 +9,11 @@ use Illuminate\Http\Request;
 
 class LamaranController extends Controller
 {
+    /*
+    |--------------------------------------------------------------------------
+    | SIMPAN LAMARAN (USER MELAMAR LOWONGAN)
+    |--------------------------------------------------------------------------
+    */
     public function store(Request $request, LowonganPekerjaan $lowongan)
     {
         $user = $request->user();
@@ -71,5 +76,73 @@ class LamaranController extends Controller
         ]);
 
         return back()->with('success', 'Lamaran berhasil dikirim!');
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | HAPUS LAMARAN (OPSIONAL, ADMIN)
+    |--------------------------------------------------------------------------
+    */
+    public function destroy(Lamaran $lamaran)
+    {
+        $lamaran->delete();
+
+        return back()->with('success', 'Lamaran berhasil dihapus.');
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | SET JADWAL INTERVIEW (ADMIN, PER LOWONGAN)
+    |--------------------------------------------------------------------------
+    | Dipanggil dari modal "Set Jadwal Interview" di halaman daftar pelamar.
+    | Jadwal HANYA diterapkan ke pelamar yang berstatus 'interview' pada
+    | lowongan terkait; pelamar dengan status lain tidak disentuh (tetap null).
+    | Route: PATCH /admin/lowongan/{lowongan}/jadwal-interview
+    | Name : admin.lamaran.setJadwalInterview
+    */
+    public function setJadwalInterview(Request $request, LowonganPekerjaan $lowongan)
+    {
+        $validated = $request->validate([
+            'jadwal_interview' => ['required', 'date'],
+            'lokasi_interview' => ['nullable', 'string', 'max:255'],
+            'catatan_interview' => ['nullable', 'string', 'max:1000'],
+        ]);
+
+        $count = Lamaran::where('lowongan_id', $lowongan->id)
+            ->where('status', 'interview')
+            ->update([
+                'jadwal_interview' => $validated['jadwal_interview'],
+                'lokasi_interview' => $validated['lokasi_interview'] ?? null,
+                'catatan_interview' => $validated['catatan_interview'] ?? null,
+            ]);
+
+        if ($count === 0) {
+            return back()->with('error', 'Belum ada pelamar berstatus Interview pada lowongan ini.');
+        }
+
+        return back()->with('success', "Jadwal interview berhasil disetel untuk {$count} pelamar.");
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | UPDATE STATUS BANYAK LAMARAN SEKALIGUS (BULK)
+    |--------------------------------------------------------------------------
+    | Dipanggil dari checkbox "select all" / select per-baris di halaman
+    | admin daftar pelamar.
+    | Route: PATCH /admin/lamaran/bulk-status
+    | Name : admin.lamaran.bulkStatus
+    */
+    public function bulkUpdateStatus(Request $request)
+    {
+        $validated = $request->validate([
+            'lamaran_ids' => ['required', 'array', 'min:1'],
+            'lamaran_ids.*' => ['exists:lamaran,id'], // <-- diganti dari 'lamarans' ke 'lamaran'
+            'status' => ['required', 'in:pending,interview,diterima,ditolak'],
+        ]);
+
+        $count = Lamaran::whereIn('id', $validated['lamaran_ids'])
+            ->update(['status' => $validated['status']]);
+
+        return back()->with('success', "Status {$count} pelamar berhasil diperbarui.");
     }
 }

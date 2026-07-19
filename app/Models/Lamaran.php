@@ -19,6 +19,13 @@ class Lamaran extends Model
         'phone',
         'address',
         'status',
+        'jadwal_interview',
+        'lokasi_interview',
+        'catatan_interview',
+    ];
+
+    protected $casts = [
+        'jadwal_interview' => 'datetime',
     ];
 
     /*
@@ -34,7 +41,7 @@ class Lamaran extends Model
 
     public function lowongan()
     {
-        return $this->belongsTo(Lowongan::class);
+        return $this->belongsTo(LowonganPekerjaan::class, 'lowongan_id');
     }
 
     public function document()

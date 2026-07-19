@@ -96,7 +96,7 @@
                     </div>
                 @endif
 
-                <form action="{{ route('lowongan.apply', $lowongan->id) }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('admin.lowongan.store', $lowongan->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
 
                     {{-- DATA DIRI --}}

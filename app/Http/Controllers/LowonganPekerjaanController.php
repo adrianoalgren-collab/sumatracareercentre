@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Perusahaan;
 use App\Models\LowonganPekerjaan;
+use App\Models\Lamaran;
 
 class LowonganPekerjaanController extends Controller
 {
@@ -14,74 +15,74 @@ class LowonganPekerjaanController extends Controller
     |--------------------------------------------------------------------------
     */
     public function index(Request $request)
-{
-    $query = LowonganPekerjaan::with('perusahaan');
+    {
+        $query = LowonganPekerjaan::with('perusahaan');
 
-    /*
-    |----------------------------------------------------------------
-    | FILTER: Pencarian (posisi / nama perusahaan)
-    |----------------------------------------------------------------
-    */
-    if ($request->filled('search')) {
-        $search = $request->search;
+        /*
+        |----------------------------------------------------------------
+        | FILTER: Pencarian (posisi / nama perusahaan)
+        |----------------------------------------------------------------
+        */
+        if ($request->filled('search')) {
+            $search = $request->search;
 
-        $query->where(function ($q) use ($search) {
-            $q->where('judul_lowongan', 'like', "%{$search}%")
-              ->orWhereHas('perusahaan', function ($q2) use ($search) {
-                  $q2->where('nama_perusahaan', 'like', "%{$search}%");
-              });
-        });
-    }
-
-    /*
-    |----------------------------------------------------------------
-    | FILTER: Kategori (diambil dari kolom kategori_label)
-    |----------------------------------------------------------------
-    */
-    if ($request->filled('kategori_label') && $request->kategori_label !== 'Semua Tipe') {
-        $query->where('kategori_label', $request->kategori_label);
-    }
-
-    /*
-    |----------------------------------------------------------------
-    | FILTER: Tanggal Posting
-    |----------------------------------------------------------------
-    */
-    if ($request->filled('tanggal_posting')) {
-        switch ($request->tanggal_posting) {
-            case '24_jam':
-                $query->where('created_at', '>=', now()->subDay());
-                break;
-            case 'minggu_ini':
-                $query->where('created_at', '>=', now()->subWeek());
-                break;
-            // 'kapan_saja' / default -> tanpa filter tambahan
+            $query->where(function ($q) use ($search) {
+                $q->where('judul_lowongan', 'like', "%{$search}%")
+                  ->orWhereHas('perusahaan', function ($q2) use ($search) {
+                      $q2->where('nama_perusahaan', 'like', "%{$search}%");
+                  });
+            });
         }
+
+        /*
+        |----------------------------------------------------------------
+        | FILTER: Kategori (diambil dari kolom kategori_label)
+        |----------------------------------------------------------------
+        */
+        if ($request->filled('kategori_label') && $request->kategori_label !== 'Semua Tipe') {
+            $query->where('kategori_label', $request->kategori_label);
+        }
+
+        /*
+        |----------------------------------------------------------------
+        | FILTER: Tanggal Posting
+        |----------------------------------------------------------------
+        */
+        if ($request->filled('tanggal_posting')) {
+            switch ($request->tanggal_posting) {
+                case '24_jam':
+                    $query->where('created_at', '>=', now()->subDay());
+                    break;
+                case 'minggu_ini':
+                    $query->where('created_at', '>=', now()->subWeek());
+                    break;
+                // 'kapan_saja' / default -> tanpa filter tambahan
+            }
+        }
+
+        /*
+        |----------------------------------------------------------------
+        | FILTER: Status Lowongan
+        |----------------------------------------------------------------
+        */
+        if ($request->filled('status') && $request->status !== 'Semua Status') {
+            $statusValue = $request->status === 'Lowongan Buka' ? 'aktif' : 'nonaktif';
+            $query->where('status_lowongan', $statusValue);
+        }
+
+        // PAGINATE: 9 lowongan per halaman, filter tetap terbawa di query string
+        $lowongan = $query->latest()
+            ->paginate(6)
+            ->withQueryString();
+
+        // Daftar kategori unik untuk opsi dropdown filter
+        $kategoriList = LowonganPekerjaan::where('status_lowongan', 'aktif')
+            ->whereNotNull('kategori_label')
+            ->distinct()
+            ->pluck('kategori_label');
+
+        return view('lowonganpekerjaan', compact('lowongan', 'kategoriList'));
     }
-
-    /*
-    |----------------------------------------------------------------
-    | FILTER: Status Lowongan
-    |----------------------------------------------------------------
-    */
-    if ($request->filled('status') && $request->status !== 'Semua Status') {
-        $statusValue = $request->status === 'Lowongan Buka' ? 'aktif' : 'nonaktif';
-        $query->where('status_lowongan', $statusValue);
-    }
-
-    // PAGINATE: 9 lowongan per halaman, filter tetap terbawa di query string
-    $lowongan = $query->latest()
-        ->paginate(6)
-        ->withQueryString();
-
-    // Daftar kategori unik untuk opsi dropdown filter
-    $kategoriList = LowonganPekerjaan::where('status_lowongan', 'aktif')
-        ->whereNotNull('kategori_label')
-        ->distinct()
-        ->pluck('kategori_label');
-
-    return view('lowonganpekerjaan', compact('lowongan', 'kategoriList'));
-}
 
     /*
     |--------------------------------------------------------------------------
@@ -109,6 +110,7 @@ class LowonganPekerjaanController extends Controller
     public function adminIndex()
     {
         $lowongan = LowonganPekerjaan::with('perusahaan')
+            ->withCount('lamaran')
             ->latest()
             ->get();
 
@@ -303,50 +305,66 @@ class LowonganPekerjaanController extends Controller
             ->with('success', 'Lowongan berhasil dihapus');
     }
 
-    // Tambahkan use statement ini di paling atas LowonganPekerjaanController.php
-// (kalau belum ada):
-//
-//   use App\Models\Lamaran;
-//
-// lalu tempel 2 method ini di dalam class LowonganPekerjaanController,
-// dekat method adminIndex() / editLowonganPekerjaan() dkk.
+    /*
+    |--------------------------------------------------------------------------
+    | TUTUP / AKTIFKAN KEMBALI (TOMBOL KUNCI DI KOLOM AKSI)
+    |--------------------------------------------------------------------------
+    | Aktif -> klik kunci -> jadi 'tutup'
+    | Tutup -> klik gembok terbuka -> jadi 'aktif' lagi
+    */
+    public function toggleStatus($id)
+    {
+        $data = LowonganPekerjaan::findOrFail($id);
 
-/**
- * Tampilkan daftar pelamar untuk satu lowongan.
- */
-public function pelamar(LowonganPekerjaan $lowongan)
-{
-    $daftarLamaran = $lowongan->lamaran()
-        ->with(['user', 'document'])
-        ->latest()
-        ->get();
+        $statusBaru = $data->status_lowongan === 'aktif' ? 'tutup' : 'aktif';
 
-    $ringkasan = [
-        'total' => $daftarLamaran->count(),
-        'pending' => $daftarLamaran->where('status', 'pending')->count(),
-        'interview' => $daftarLamaran->where('status', 'interview')->count(),
-        'diterima' => $daftarLamaran->where('status', 'diterima')->count(),
-        'ditolak' => $daftarLamaran->where('status', 'ditolak')->count(),
-    ];
+        $data->update(['status_lowongan' => $statusBaru]);
 
-    return view('LowonganPekerjaan.indexPelamarAll', [
-        'lowongan' => $lowongan,
-        'daftarLamaran' => $daftarLamaran,
-        'ringkasan' => $ringkasan,
-    ]);
-}
+        $pesan = $statusBaru === 'tutup'
+            ? 'Lowongan berhasil ditutup'
+            : 'Lowongan berhasil diaktifkan kembali';
 
-/**
- * Ubah status satu lamaran (pending / interview / diterima / ditolak).
- */
-public function updateStatusPelamar(Request $request, Lamaran $lamaran)
-{
-    $request->validate([
-        'status' => ['required', 'in:pending,interview,diterima,ditolak'],
-    ]);
+        return redirect()
+            ->back()
+            ->with('success', $pesan);
+    }
 
-    $lamaran->update(['status' => $request->status]);
+    /**
+     * Tampilkan daftar pelamar untuk satu lowongan.
+     */
+    public function pelamar(LowonganPekerjaan $lowongan)
+    {
+        $daftarLamaran = $lowongan->lamaran()
+            ->with(['user', 'document'])
+            ->latest()
+            ->get();
 
-    return back()->with('success', 'Status pelamar berhasil diperbarui.');
-}
+        $ringkasan = [
+            'total' => $daftarLamaran->count(),
+            'pending' => $daftarLamaran->where('status', 'pending')->count(),
+            'interview' => $daftarLamaran->where('status', 'interview')->count(),
+            'diterima' => $daftarLamaran->where('status', 'diterima')->count(),
+            'ditolak' => $daftarLamaran->where('status', 'ditolak')->count(),
+        ];
+
+        return view('LowonganPekerjaan.indexPelamarAll', [
+            'lowongan' => $lowongan,
+            'daftarLamaran' => $daftarLamaran,
+            'ringkasan' => $ringkasan,
+        ]);
+    }
+
+    /**
+     * Ubah status satu lamaran (pending / interview / diterima / ditolak).
+     */
+    public function updateStatusPelamar(Request $request, Lamaran $lamaran)
+    {
+        $request->validate([
+            'status' => ['required', 'in:pending,interview,diterima,ditolak'],
+        ]);
+
+        $lamaran->update(['status' => $request->status]);
+
+        return back()->with('success', 'Status pelamar berhasil diperbarui.');
+    }
 }

@@ -84,12 +84,12 @@ Route::middleware('auth')->group(function () {
 
     /*
     |----------------------------------------------------------------------
-    | LAMARAN
+    | LAMARAN (USER)
     |----------------------------------------------------------------------
     */
 
     Route::post('/lowongan/{lowongan}/lamar', [LamaranController::class, 'store'])
-        ->name('lowongan.apply');
+        ->name('lamaran.store');
 
     /*
     |----------------------------------------------------------------------
@@ -108,6 +108,18 @@ Route::middleware('auth')->group(function () {
 
     Route::patch('/profil/foto', [ProfileController::class, 'updateFoto'])
         ->name('profil.foto.update');
+
+    /* JADWAL INTERVIEW SAYA */
+    Route::get('/profil-saya/interview', [ProfileController::class, 'jadwalInterview'])
+        ->name('interview.jadwal');
+
+    /* PENGUMUMAN HASIL INTERVIEW SAYA */
+    Route::get('/profil-saya/pengumuman', [ProfileController::class, 'pengumumanInterview'])
+        ->name('pengumuman.interview');
+
+    /* DETAIL PENGUMUMAN HASIL INTERVIEW (redirect ke view diterima/ditolak) */
+    Route::get('/profil-saya/pengumuman/{id}', [ProfileController::class, 'pengumumanDetail'])
+        ->name('pengumuman.detail');
 
     Route::post('/profil/dokumen', [DocumentController::class, 'store'])
         ->name('dokumen.store');
@@ -166,6 +178,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::delete('/admin/lowongan/delete/{id}', [LowonganPekerjaanController::class, 'destroy'])
         ->name('admin.lowongan.delete');
 
+    Route::patch('/admin/lowongan/{id}/toggle-status', [LowonganPekerjaanController::class, 'toggleStatus'])
+        ->name('admin.lowongan.toggleStatus');
 
     /*
     |----------------------------------------------------------------------
@@ -198,7 +212,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     /* DELETE */
     Route::delete('/admin/perusahaan/delete/{id}', [PerusahaanController::class, 'destroy'])
-        ->name('admin.perusahaan.delete');
+        ->name('admin.perusahaan.destroy');
 
 
     /*
@@ -232,14 +246,26 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     /* DELETE */
     Route::delete('/admin/pelamar/delete/{id}', [PelamarController::class, 'destroy'])
-        ->name('admin.pelamar.delete');
+        ->name('admin.pelamar.destroy');
 
     /* PELAMAR PER LOWONGAN */
     Route::get('/admin/lowongan/{lowongan}/pelamar', [LowonganPekerjaanController::class, 'pelamar'])
         ->name('admin.lowongan.pelamar');
 
-    Route::patch('/admin/lamaran/{lamaran}/status', [LowonganPekerjaanController::class, 'updateStatusPelamar'])
-        ->name('admin.lamaran.status');
+    /*
+    |----------------------------------------------------------------------
+    | LAMARAN (ADMIN)
+    |----------------------------------------------------------------------
+    */
+
+    Route::patch('/admin/lamaran/bulk-status', [LamaranController::class, 'bulkUpdateStatus'])
+        ->name('admin.lamaran.bulkStatus');
+
+    Route::delete('/admin/lamaran/{lamaran}', [LamaranController::class, 'destroy'])
+        ->name('admin.lamaran.destroy');
+
+    Route::patch('/admin/lowongan/{lowongan}/jadwal-interview', [LamaranController::class, 'setJadwalInterview'])
+        ->name('admin.lamaran.setJadwalInterview');
 
     /*
     |----------------------------------------------------------------------

@@ -126,6 +126,24 @@
                             <i class="fas fa-edit"></i>
                         </a>
 
+                        <form action="{{ route('admin.lowongan.toggleStatus', $item->id) }}"
+                            method="POST"
+                            id="form-toggle-{{ $item->id }}"
+                            style="margin:0;">
+
+                            @csrf
+                            @method('PATCH')
+
+                            <button type="button"
+                                    class="btn-icon {{ $item->status_lowongan == 'aktif' ? 'lock' : 'unlock' }}"
+                                    title="{{ $item->status_lowongan == 'aktif' ? 'Tutup lowongan' : 'Aktifkan kembali' }}"
+                                    onclick="konfirmasiToggleStatus('form-toggle-{{ $item->id }}', '{{ $item->status_lowongan == 'aktif' ? 'menutup' : 'mengaktifkan kembali' }}', '{{ addslashes($item->judul_lowongan) }}')"
+                                    style="display:inline-flex; align-items:center; justify-content:center;">
+                                <i class="fas {{ $item->status_lowongan == 'aktif' ? 'fa-lock' : 'fa-lock-open' }}"></i>
+                            </button>
+
+                        </form>
+
                         <form action="{{ route('admin.lowongan.delete', $item->id) }}"
                             method="POST"
                             id="form-hapus-{{ $item->id }}"
@@ -162,6 +180,7 @@
 
 <x-modal-success />
 <x-modal-konfirmasi-hapus />
+<x-modal-konfirmasi />
 
 <style>
     .pelamar-count-link {
@@ -181,6 +200,22 @@
 
     .pelamar-count-link:hover {
         background: #dcf0e8;
+    }
+
+    .btn-icon.lock {
+        color: #b45309;
+        background: rgba(217, 119, 6, 0.1);
+    }
+    .btn-icon.lock:hover {
+        background: rgba(217, 119, 6, 0.18);
+    }
+
+    .btn-icon.unlock {
+        color: #2f8f6e;
+        background: rgba(47, 143, 110, 0.1);
+    }
+    .btn-icon.unlock:hover {
+        background: rgba(47, 143, 110, 0.18);
     }
 </style>
 

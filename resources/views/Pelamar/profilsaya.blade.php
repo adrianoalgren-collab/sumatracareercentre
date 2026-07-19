@@ -13,42 +13,19 @@
     {{-- Material Icons --}}
     <link href="https://fonts.googleapis.com/css2?family=Material+Icons+Round" rel="stylesheet" />
 
-    {{-- Main CSS --}}
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    {{-- Data route Laravel untuk dibaca oleh pelamar.js (file JS statis
+         tidak bisa memanggil route() langsung) --}}
+    <script>
+        window.PROFIL_ROUTES = {
+            avatarUpdate: "{{ route('profil.foto.update') }}",
+            documentStore: "{{ route('dokumen.store') }}",
+            documentDeleteBase: "{{ url('profil/dokumen') }}",
+            profilUpdate: "{{ route('profil.update') }}",
+        };
+    </script>
 
-    <style>
-        /* SKELETON LOADING */
-        .skeleton {
-            background: linear-gradient(90deg, #e8eef1 25%, #f2f6f8 37%, #e8eef1 63%);
-            background-size: 400% 100%;
-            animation: skeleton-shimmer 1.4s ease infinite;
-            border-radius: 8px;
-        }
-
-        @keyframes skeleton-shimmer {
-            0% { background-position: 100% 50%; }
-            100% { background-position: 0 50%; }
-        }
-
-        .skeleton-circle { border-radius: 50%; }
-
-        .skeleton-line { height: 14px; margin-bottom: 10px; }
-        .skeleton-line.w-60 { width: 60%; }
-        .skeleton-line.w-80 { width: 80%; }
-        .skeleton-line.w-40 { width: 40%; }
-
-        #profileContent {
-            opacity: 0;
-            transition: opacity 0.4s ease;
-        }
-        #profileContent.loaded {
-            opacity: 1;
-        }
-
-        #profileSkeleton.hidden {
-            display: none;
-        }
-    </style>
+    {{-- Main CSS + Page-specific CSS/JS --}}
+    @vite(['resources/css/app.css', 'resources/css/pelamar.css', 'resources/js/app.js', 'resources/js/pelamar.js'])
 </head>
 
 <body style="background:var(--cream); font-family:'DM Sans',sans-serif; color:var(--charcoal);">
@@ -270,8 +247,16 @@
     </div>
 
     <div class="job-card profile-stat-card">
-        <div class="stat-icon" style="margin:0 0 14px; background:rgba(238,21,42,0.1);">
-            <span class="material-icons-round" style="color:var(--amber);">schedule</span>
+        <div style="display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:14px;">
+            <div class="stat-icon" style="margin:0; background:rgba(238,21,42,0.1);">
+                <span class="material-icons-round" style="color:var(--amber);">schedule</span>
+            </div>
+            @if($totalInterview > 0)
+                <a href="{{ route('interview.jadwal') }}" class="profile-stat-cta">
+                    Lihat Jadwal
+                    <span class="material-icons-round">arrow_forward</span>
+                </a>
+            @endif
         </div>
         <p class="job-company" style="margin-bottom:2px;">Interview</p>
         <h3 class="job-title" style="margin-bottom:10px;">{{ $totalInterview }}</h3>
@@ -284,17 +269,25 @@
         </p>
     </div>
 
-    <div class="job-card profile-stat-card">
-        <div class="stat-icon" style="margin:0 0 14px; background:rgba(0,75,95,0.1);">
-            <span class="material-icons-round" style="color:var(--forest);">check_circle</span>
+   <div class="job-card profile-stat-card">
+        <div style="display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:14px;">
+            <div class="stat-icon" style="margin:0; background:rgba(0,75,95,0.1);">
+                <span class="material-icons-round" style="color:var(--forest);">campaign</span>
+            </div>
+            @if($totalDiterima > 0)
+                <a href="{{ route('pengumuman.interview') }}" class="profile-stat-cta">
+                    Lihat Pengumuman
+                    <span class="material-icons-round">arrow_forward</span>
+                </a>
+            @endif
         </div>
-        <p class="job-company" style="margin-bottom:2px;">Diterima</p>
+        <p class="job-company" style="margin-bottom:2px;">Pengumuman</p>
         <h3 class="job-title" style="margin-bottom:10px;">{{ $totalDiterima }}</h3>
         <p class="profile-stat-note">
             @if($totalDiterima > 0)
-                Selamat! Kamu diterima di {{ $totalDiterima }} perusahaan.
+                Ada {{ $totalDiterima }} hasil pengumuman interview untukmu.
             @else
-                Lengkapi profil untuk peluang lebih besar.
+                Hasil interview akan muncul di sini.
             @endif
         </p>
     </div>
@@ -416,278 +409,6 @@
 </main>
 
 <x-footer />
-
-<script>
-    (function () {
-        const skeleton = document.getElementById('profileSkeleton');
-        const content = document.getElementById('profileContent');
-        const avatarImg = document.getElementById('avatarPreviewImg');
-
-        function reveal() {
-            skeleton.classList.add('hidden');
-            content.classList.add('loaded');
-        }
-
-        // Tunggu avatar (gambar terberat) selesai load, dengan fallback timeout
-        if (avatarImg.complete) {
-            reveal();
-        } else {
-            avatarImg.addEventListener('load', reveal, { once: true });
-            avatarImg.addEventListener('error', reveal, { once: true });
-        }
-
-        // Fallback: paksa tampil setelah 1.5 detik meskipun gambar lambat
-        setTimeout(reveal, 1500);
-    })();
-</script>
-
-<script>
-    (function () {
-        const input = document.getElementById('avatarInput');
-        const img = document.getElementById('avatarPreviewImg');
-        const loading = document.getElementById('avatarLoading');
-        const form = document.getElementById('avatarForm');
-        const originalSrc = img.src;
-
-        input.addEventListener('change', function () {
-            const file = this.files[0];
-            if (!file) return;
-
-            const maxSizeMB = 2;
-            if (file.size > maxSizeMB * 1024 * 1024) {
-                alert('Ukuran foto maksimal ' + maxSizeMB + 'MB.');
-                input.value = '';
-                return;
-            }
-
-            // Preview instan
-            const reader = new FileReader();
-            reader.onload = function (e) {
-                img.src = e.target.result;
-            };
-            reader.readAsDataURL(file);
-
-            // Auto-submit ke server
-            loading.classList.add('active');
-
-            const formData = new FormData(form);
-
-            fetch(form.action, {
-                method: 'POST',
-                body: formData,
-                headers: { 'X-Requested-With': 'XMLHttpRequest' },
-            })
-                .then(response => {
-                    if (!response.ok) throw new Error('Gagal upload');
-                    return response.json();
-                })
-                .then(data => {
-                    if (data.avatar_url) {
-                        img.src = data.avatar_url;
-                    }
-                })
-                .catch(() => {
-                    alert('Gagal mengubah foto profil, silakan coba lagi.');
-                    img.src = originalSrc;
-                })
-                .finally(() => {
-                    loading.classList.remove('active');
-                    input.value = '';
-                });
-        });
-    })();
-</script>
-
-<script>
-    (function () {
-        const documentInput = document.getElementById('documentInput');
-        const docList = document.getElementById('docList');
-        const csrfToken = document.querySelector('#documentForm input[name="_token"]').value;
-
-        function docItemHtml(doc) {
-            return `
-                <div class="doc-item" data-id="${doc.id}">
-                    <div class="doc-item-info">
-                        <span class="material-icons-round" style="color:var(--rust);">${doc.icon}</span>
-                        <span>${doc.name}</span>
-                    </div>
-                    <div style="display:flex; align-items:center; gap:8px;">
-                        <a href="${doc.url}" target="_blank" class="material-icons-round doc-item-view">visibility</a>
-                        <span class="material-icons-round" style="cursor:pointer; color:var(--rust); font-size:20px;" data-delete-id="${doc.id}">delete</span>
-                    </div>
-                </div>`;
-        }
-
-        documentInput.addEventListener('change', function () {
-            const file = this.files[0];
-            if (!file) return;
-
-            if (file.size > 5 * 1024 * 1024) {
-                alert('Ukuran dokumen maksimal 5MB.');
-                this.value = '';
-                return;
-            }
-
-            const formData = new FormData();
-            formData.append('document', file);
-            formData.append('_token', csrfToken);
-
-            fetch("{{ route('dokumen.store') }}", {
-                method: 'POST',
-                body: formData,
-                headers: { 'X-Requested-With': 'XMLHttpRequest' },
-            })
-                .then(res => { if (!res.ok) throw new Error(); return res.json(); })
-                .then(doc => {
-                    document.getElementById('docEmptyNote')?.remove();
-                    docList.insertAdjacentHTML('beforeend', docItemHtml(doc));
-                })
-                .catch(() => alert('Gagal mengunggah dokumen, silakan coba lagi.'))
-                .finally(() => { documentInput.value = ''; });
-        });
-
-        docList.addEventListener('click', function (e) {
-            const btn = e.target.closest('[data-delete-id]');
-            if (!btn) return;
-            if (!confirm('Hapus dokumen ini?')) return;
-
-            fetch(`/profil/dokumen/${btn.dataset.deleteId}`, {
-                method: 'DELETE',
-                headers: { 'X-CSRF-TOKEN': csrfToken, 'X-Requested-With': 'XMLHttpRequest' },
-            })
-                .then(res => { if (!res.ok) throw new Error(); btn.closest('.doc-item').remove(); })
-                .catch(() => alert('Gagal menghapus dokumen, silakan coba lagi.'));
-        });
-    })();
-
-    (function () {
-        const skillList = document.getElementById('skillList');
-        const skillInput = document.getElementById('skillInput');
-        const skillAddBtn = document.getElementById('skillAddBtn');
-        const csrfToken = document.querySelector('#documentForm input[name="_token"]').value;
-
-        function skillTagHtml(skill) {
-            return `
-                <span class="skill-tag" data-skill="${skill}">
-                    ${skill}
-                    <span class="material-icons-round skill-tag-remove" style="font-size:14px; cursor:pointer; margin-left:4px; vertical-align:middle;">close</span>
-                </span>`;
-        }
-
-        function addSkill() {
-            const value = skillInput.value.trim();
-            if (!value || skillList.querySelector(`[data-skill="${value}"]`)) return;
-
-            fetch("{{ route('skills.add') }}", {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': csrfToken,
-                    'X-Requested-With': 'XMLHttpRequest',
-                },
-                body: JSON.stringify({ skill: value }),
-            })
-                .then(res => { if (!res.ok) throw new Error(); })
-                .then(() => {
-                    skillList.insertAdjacentHTML('beforeend', skillTagHtml(value));
-                    skillInput.value = '';
-                })
-                .catch(() => alert('Gagal menambah keahlian, silakan coba lagi.'));
-        }
-
-        skillAddBtn.addEventListener('click', addSkill);
-        skillInput.addEventListener('keydown', e => {
-            if (e.key === 'Enter') { e.preventDefault(); addSkill(); }
-        });
-
-        skillList.addEventListener('click', function (e) {
-            if (!e.target.classList.contains('skill-tag-remove')) return;
-
-            const tag = e.target.closest('.skill-tag');
-            const skill = tag.dataset.skill;
-
-            fetch("{{ route('skills.remove') }}", {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': csrfToken,
-                    'X-Requested-With': 'XMLHttpRequest',
-                },
-                body: JSON.stringify({ skill }),
-            })
-                .then(res => { if (!res.ok) throw new Error(); tag.remove(); })
-                .catch(() => alert('Gagal menghapus keahlian, silakan coba lagi.'));
-        });
-    })();
-</script>
-
-<script>
-(function () {
-    const card = document.getElementById('dataPribadiCard');
-    const form = document.getElementById('dataPribadiForm');
-    const editBtn = document.getElementById('editDataBtn');
-    const actions = document.getElementById('editDataActions');
-    const cancelBtn = document.getElementById('cancelDataBtn');
-    const saveBtn = document.getElementById('saveDataBtn');
-    const csrfToken = form.querySelector('input[name="_token"]').value;
-
-    function toggleEditMode(isEditing) {
-        card.querySelectorAll('.data-view').forEach(el => {
-            el.style.display = isEditing ? 'none' : 'block';
-        });
-        card.querySelectorAll('.data-edit').forEach(el => {
-            el.style.display = isEditing ? 'block' : 'none';
-        });
-        editBtn.style.display = isEditing ? 'none' : 'flex';
-        actions.style.display = isEditing ? 'flex' : 'none';
-    }
-
-    function resetInputs() {
-        card.querySelectorAll('.data-edit').forEach(input => {
-            const view = card.querySelector(`.data-view[data-field="${input.name}"]`);
-            input.value = view.textContent.trim() === 'Belum diisi' ? '' : view.textContent.trim();
-        });
-    }
-
-    editBtn.addEventListener('click', function (e) {
-        e.preventDefault();
-        resetInputs();
-        toggleEditMode(true);
-    });
-
-    cancelBtn.addEventListener('click', function (e) {
-        e.preventDefault();
-        toggleEditMode(false);
-    });
-
-    saveBtn.addEventListener('click', function (e) {
-        e.preventDefault();
-
-        const formData = new FormData(form);
-
-        fetch("{{ route('profil.update') }}", {
-            method: 'POST', // Laravel method spoofing (@method('PATCH') di form)
-            body: formData,
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-                'Accept': 'application/json',
-            },
-        })
-            .then(res => {
-                if (!res.ok) throw new Error();
-                return res.json();
-            })
-            .then(data => {
-                card.querySelectorAll('.data-view').forEach(el => {
-                    const value = data[el.dataset.field];
-                    el.textContent = value && value.trim() !== '' ? value : 'Belum diisi';
-                });
-                toggleEditMode(false);
-            })
-            .catch(() => alert('Gagal menyimpan data, periksa kembali isian kamu.'));
-    });
-})();
-</script>
 
 </body>
 </html>
