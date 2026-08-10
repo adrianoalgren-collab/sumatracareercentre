@@ -86,23 +86,6 @@ Once both are running, open the app at `http://localhost:8000`.
 
 ---
 
-## 🧪 Testing
-
-Functional and API testing was performed using **Postman** (endpoint collections available in `/tests/postman`), while performance/load testing was performed using **Apache JMeter**.
-
-```bash
-# Run backend test suite
-php artisan test
-```
-
----
-
-## 👥 Development Team
-
-Developed by a student team from Politeknik Caltex Riau using the Scrum methodology, covering both development and quality assurance roles.
-
----
-
 ## 📄 License
 
 This project was developed for academic purposes at Politeknik Caltex Riau.
