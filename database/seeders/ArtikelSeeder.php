@@ -127,6 +127,121 @@ class ArtikelSeeder extends Seeder
                 'penulis_bio' => 'Career coach dengan 8 tahun pengalaman mendampingi fresh graduate di Sumatera mencari pekerjaan pertama mereka.',
                 'status' => 'published',
             ],
+            [
+                'judul' => 'Mengenal Karier di Bidang Quality Assurance (QA)',
+                'kategori' => 'Tren Industri',
+                'ringkasan' => 'QA bukan sekadar mencari bug — profesi ini punya peran strategis dalam memastikan kualitas produk digital.',
+                'konten' => '<p>Seiring berkembangnya industri teknologi dan fintech, kebutuhan akan tenaga Quality Assurance (QA) semakin meningkat. Banyak lulusan IT belum menyadari bahwa QA adalah jalur karier yang menjanjikan dan strategis.</p>
+<h2>1. Apa Itu Quality Assurance?</h2>
+<p>QA bertanggung jawab memastikan sebuah aplikasi atau sistem berjalan sesuai spesifikasi sebelum dirilis ke pengguna, mencakup pengujian fungsional, performa, hingga keamanan.</p>
+<h2>2. Skill Dasar yang Perlu Dikuasai</h2>
+<p>Seorang QA umumnya perlu memahami dasar pemrograman, SQL untuk validasi data, serta tools pengujian seperti Postman dan Selenium.</p>
+<ul>
+<li>Kemampuan menulis test case yang terstruktur</li>
+<li>Pemahaman dasar SDLC dan STLC</li>
+<li>Ketelitian dan kemampuan analisis root cause</li>
+</ul>
+<h2>3. Jenjang Karier di Bidang QA</h2>
+<p>Dari QA Tester, kamu bisa berkembang menjadi QA Engineer, QA Lead, hingga QA Manager, bahkan beralih ke bidang seperti DevOps atau Product Management.</p>',
+                'waktu_baca_menit' => 5,
+                'tags' => 'Quality Assurance, Karier IT, Software Testing',
+                'penulis_nama' => 'Dimas Prasetyo',
+                'penulis_jabatan' => 'HR Consultant',
+                'penulis_bio' => 'Konsultan HR yang sudah membantu ratusan perusahaan menyaring kandidat terbaik selama lebih dari 6 tahun.',
+                'status' => 'published',
+            ],
+            [
+                'judul' => 'Panduan Memilih Program Magang yang Tepat',
+                'kategori' => 'Tips Karier',
+                'ringkasan' => 'Tidak semua program magang diciptakan sama — kenali kriteria magang yang benar-benar memberi nilai untuk kariermu.',
+                'konten' => '<p>Magang adalah kesempatan berharga untuk mendapatkan pengalaman kerja nyata sebelum lulus. Namun, tidak semua program magang memberikan manfaat yang sama, sehingga penting untuk selektif dalam memilih.</p>
+<h2>1. Perhatikan Struktur Program</h2>
+<p>Cari program magang yang memiliki jadwal pelatihan, mentor pembimbing, dan target pembelajaran yang jelas, bukan hanya sekadar mengisi posisi kosong.</p>
+<h2>2. Cek Relevansi dengan Bidang Studi</h2>
+<p>Pilih magang yang sejalan dengan jurusan atau minat kariermu agar pengalaman yang didapat benar-benar bisa dituliskan di CV secara relevan.</p>
+<ul>
+<li>Pastikan ada evaluasi kinerja berkala</li>
+<li>Cari tahu apakah magang ini bisa dikonversi jadi SKS</li>
+<li>Tanyakan peluang menjadi karyawan tetap setelah magang</li>
+</ul>
+<h2>3. Jangan Lupakan Aspek Kesejahteraan</h2>
+<p>Uang saku, fasilitas kerja, dan jam kerja yang wajar juga penting diperhatikan agar kamu tetap produktif selama program berlangsung.</p>',
+                'waktu_baca_menit' => 5,
+                'tags' => 'Magang, Internship, Tips Karier',
+                'penulis_nama' => 'Sarah Wulandari',
+                'penulis_jabatan' => 'Talent Acquisition Lead',
+                'penulis_bio' => 'Berpengalaman memimpin proses rekrutmen di berbagai startup teknologi di Sumatera dan Jawa.',
+                'status' => 'published',
+            ],
+            [
+                'judul' => 'Pertumbuhan Industri Fintech di Indonesia Tahun 2026',
+                'kategori' => 'Tren Industri',
+                'ringkasan' => 'Industri fintech terus berkembang pesat, membuka ribuan peluang karier baru di bidang teknologi dan keuangan digital.',
+                'konten' => '<p>Sepanjang tahun 2026, industri financial technology (fintech) di Indonesia mencatatkan pertumbuhan yang signifikan, didorong oleh adopsi pembayaran digital dan layanan keuangan berbasis teknologi yang semakin meluas.</p>
+<h2>1. Permintaan Talenta Teknologi Meningkat</h2>
+<p>Perusahaan fintech dan penyedia solusi pembayaran digital membutuhkan lebih banyak software engineer, QA engineer, dan data analyst untuk mendukung ekspansi produk mereka.</p>
+<h2>2. Kolaborasi dengan Institusi Keuangan Tradisional</h2>
+<p>Bank dan lembaga keuangan konvensional semakin banyak bermitra dengan perusahaan fintech untuk mempercepat transformasi digital layanan mereka.</p>
+<ul>
+<li>Peningkatan adopsi pembayaran digital di sektor UMKM</li>
+<li>Regulasi yang semakin mendukung inovasi fintech</li>
+<li>Permintaan tinggi untuk talenta dengan skill keamanan siber</li>
+</ul>
+<h2>3. Peluang Karier bagi Lulusan Baru</h2>
+<p>Program magang dan entry-level di perusahaan fintech menjadi pintu masuk yang baik bagi fresh graduate untuk membangun karier di industri yang terus bertumbuh ini.</p>',
+                'waktu_baca_menit' => 6,
+                'tags' => 'Fintech, Tren Industri, Karier Teknologi',
+                'penulis_nama' => 'Fajar Nugraha',
+                'penulis_jabatan' => 'Industry Analyst',
+                'penulis_bio' => 'Menganalisis tren pasar kerja dan industri kreatif di kawasan Sumatera untuk berbagai publikasi bisnis.',
+                'status' => 'published',
+            ],
+            [
+                'judul' => 'Soft Skill yang Paling Dicari Perusahaan Saat Ini',
+                'kategori' => 'Tips Karier',
+                'ringkasan' => 'Kemampuan teknis penting, tapi soft skill sering jadi penentu akhir dalam proses seleksi kandidat.',
+                'konten' => '<p>Banyak kandidat fokus mengasah hard skill, padahal soft skill sering menjadi pembeda utama saat perusahaan memutuskan siapa yang akan diterima.</p>
+<h2>1. Komunikasi yang Jelas dan Efektif</h2>
+<p>Kemampuan menyampaikan ide secara ringkas dan mudah dipahami sangat dihargai, baik dalam komunikasi tertulis maupun lisan.</p>
+<h2>2. Kemampuan Bekerja dalam Tim</h2>
+<p>Perusahaan mencari individu yang bisa berkolaborasi lintas divisi, menerima masukan, dan berkontribusi positif dalam dinamika tim.</p>
+<ul>
+<li>Kemampuan adaptasi terhadap perubahan</li>
+<li>Problem solving dan berpikir kritis</li>
+<li>Manajemen waktu dan prioritas kerja</li>
+</ul>
+<h2>3. Sikap Proaktif dan Mau Belajar</h2>
+<p>Karyawan yang inisiatif dan terbuka terhadap hal baru cenderung berkembang lebih cepat dan dipercaya menangani tanggung jawab lebih besar.</p>',
+                'waktu_baca_menit' => 5,
+                'tags' => 'Soft Skill, Karier, Rekrutmen',
+                'penulis_nama' => 'Rani Anggraini',
+                'penulis_jabatan' => 'Career Coach',
+                'penulis_bio' => 'Career coach dengan 8 tahun pengalaman mendampingi fresh graduate di Sumatera mencari pekerjaan pertama mereka.',
+                'status' => 'published',
+            ],
+            [
+                'judul' => 'Persiapan Tes Teknis untuk Posisi Software Developer',
+                'kategori' => 'Tips Karier',
+                'ringkasan' => 'Tes teknis sering jadi tahap paling menentukan bagi kandidat developer — berikut cara mempersiapkannya dengan efektif.',
+                'konten' => '<p>Bagi kandidat posisi software developer, tes teknis atau technical interview sering menjadi tahap seleksi yang paling menentukan. Persiapan yang matang bisa meningkatkan rasa percaya diri sekaligus performa saat tes berlangsung.</p>
+<h2>1. Kuasai Fundamental Pemrograman</h2>
+<p>Pastikan kamu memahami konsep dasar seperti struktur data, algoritma, dan kompleksitas waktu, karena ini sering muncul dalam tes coding.</p>
+<h2>2. Latihan dengan Studi Kasus Nyata</h2>
+<p>Kerjakan soal-soal dari platform latihan coding dan coba selesaikan proyek kecil yang mensimulasikan kondisi kerja sesungguhnya.</p>
+<ul>
+<li>Biasakan menjelaskan proses berpikir saat coding</li>
+<li>Pelajari dasar database dan query SQL</li>
+<li>Pahami konsep version control seperti Git</li>
+</ul>
+<h2>3. Jangan Lupakan Komunikasi Selama Tes</h2>
+<p>Pewawancara sering menilai bukan hanya jawaban akhir, tapi juga bagaimana kamu berpikir dan berkomunikasi selama proses pengerjaan soal.</p>',
+                'waktu_baca_menit' => 6,
+                'tags' => 'Technical Interview, Software Developer, Tips Karier',
+                'penulis_nama' => 'Dimas Prasetyo',
+                'penulis_jabatan' => 'HR Consultant',
+                'penulis_bio' => 'Konsultan HR yang sudah membantu ratusan perusahaan menyaring kandidat terbaik selama lebih dari 6 tahun.',
+                'status' => 'published',
+            ],
         ];
 
         foreach ($artikelData as $data) {

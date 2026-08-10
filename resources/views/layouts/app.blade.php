@@ -17,6 +17,8 @@
     {{-- PENTING: tanpa @stack('styles') ini, semua @push('styles')
          dari child view (termasuk pelamar.blade.php) tidak pernah dirender --}}
     @stack('styles')
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
 
 <body class="app-body">

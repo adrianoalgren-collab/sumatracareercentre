@@ -28,7 +28,7 @@ class ArtikelController extends Controller
     $sideArticles = (clone $query)
         ->when($featured, fn($q) => $q->where('id', '!=', $featured->id))
         ->latest()
-        ->take(2)
+        ->take(4)
         ->get();
 
     // Grid "Artikel Terbaru" (paginated, selain featured)
@@ -66,16 +66,31 @@ class ArtikelController extends Controller
     | HALAMAN ADMIN — LIST ARTIKEL
     |--------------------------------------------------------------------------
     */
-    public function adminIndex(Request $request)
+   public function adminIndex(Request $request)
     {
-        $artikel = Artikel::latest()
-            ->when($request->filled('search'), function ($q) use ($request) {
-                $q->where('judul', 'like', '%' . $request->search . '%');
-            })
-            ->paginate(10)
-            ->withQueryString();
+        $query = Artikel::latest();
 
-        return view('Artikel.indexArtikel', compact('artikel'));
+        if ($request->filled('search')) {
+            $query->where('judul', 'like', '%' . $request->search . '%');
+        }
+
+        if ($request->filled('status') && $request->status !== 'semua') {
+            $query->where('status', $request->status);
+        }
+
+        $perPageOptions = [10, 25, 50, 100];
+        $perPage = (int) $request->get('per_page', 10);
+
+        if (!in_array($perPage, $perPageOptions)) {
+            $perPage = 10;
+        }
+
+        $artikel = $query->paginate($perPage)->withQueryString();
+
+        return view(
+            'Artikel.indexArtikel',
+            compact('artikel', 'perPage', 'perPageOptions')
+        );
     }
 
     /*

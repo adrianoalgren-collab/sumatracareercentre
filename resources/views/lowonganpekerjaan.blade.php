@@ -8,7 +8,7 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,600;1,700&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -27,9 +27,8 @@
                 <div class="section-eyebrow">Pusat Karier Sumatera</div>
                 <h1 class="section-title">Daftar Lowongan Kerja</h1>
                 <p class="section-sub">
-                    Temukan peluang karier terbaik di seluruh wilayah Sumatra.
-                    Dari perusahaan teknologi inovatif hingga institusi besar,
-                    langkah besar Anda berikutnya dimulai di sini.
+                    Temukan peluang karier terbaik di seluruh wilayah Sumatra <br>
+                    dari perusahaan teknologi inovatif hingga institusi besar. <br>
                 </p>
             </div>
         </div>

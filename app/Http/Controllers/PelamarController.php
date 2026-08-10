@@ -14,18 +14,29 @@ class PelamarController extends Controller
     /**
      * Menampilkan daftar seluruh pelamar.
      */
-    public function index(Request $request)
+  public function index(Request $request)
     {
-        $query = User::where('role', 'pelamar');
+        $query = User::where('role', 'pelamar')
+            ->latest();
 
-        // Pencarian nama pelamar
         if ($request->filled('search')) {
             $query->where('name', 'like', '%' . $request->search . '%');
         }
 
-        $pelamar = $query->latest()->paginate(10)->withQueryString();
+        // JUMLAH DATA PER HALAMAN (default 10, bisa dipilih user)
+        $perPageOptions = [10, 25, 50, 100];
+        $perPage = (int) $request->get('per_page', 10);
 
-        return view('Pelamar.indexPelamar', compact('pelamar'));
+        if (!in_array($perPage, $perPageOptions)) {
+            $perPage = 10;
+        }
+
+        $pelamar = $query->paginate($perPage)->withQueryString();
+
+        return view(
+            'Pelamar.indexPelamar',
+            compact('pelamar', 'perPage', 'perPageOptions')
+        );
     }
 
     /**

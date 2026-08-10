@@ -159,7 +159,7 @@
                             <i class="fas fa-edit"></i>
                         </a>
 
-                        <form action="{{ route('admin.perusahaan.delete', $item->id) }}"
+                        <form action="{{ route('admin.perusahaan.destroy', $item->id) }}"
                             method="POST"
                             id="form-hapus-{{ $item->id }}"
                             style="margin:0;">

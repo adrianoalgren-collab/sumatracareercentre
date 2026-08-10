@@ -21,6 +21,7 @@ export default defineConfig({
                 'resources/css/register.css',
                 'resources/css/sidebar.css',
                 'resources/css/welcome.css',
+                'resources/css/artikel.css',
 
                 // JS
                 'resources/js/app.js',
@@ -34,6 +35,7 @@ export default defineConfig({
                 'resources/js/modal-success.js',
                 'resources/js/register.js',
                 'resources/js/pelamar.js',
+                'resources/js/artikel.js',
                 // tambahkan file js lain kalau ada yang belum ke-scroll di screenshot
             ],
             refresh: true,

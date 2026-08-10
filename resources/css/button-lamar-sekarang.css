@@ -15,7 +15,7 @@
     max-width: 420px;
     width: 90%;
     max-height: 85vh;
-    box-shadow: 0 20px 60px rgba(15, 40, 50, 0.25);
+    box-shadow: 0 20px 60px rgba(45, 35, 32, 0.25);
 }
 
 .apply-dialog-wide {
@@ -23,7 +23,7 @@
 }
 
 .apply-dialog::backdrop {
-    background: rgba(15, 30, 38, 0.55);
+    background: rgba(45, 35, 32, 0.55);
     backdrop-filter: blur(2px);
 }
 
@@ -58,7 +58,7 @@
     background: none;
     border: none;
     cursor: pointer;
-    color: #5a7480;
+    color: #8A7B6C;
     display: flex;
     align-items: center;
 }
@@ -68,7 +68,7 @@
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.06em;
-    color: #2f8f6e;
+    color: #B8860B;
     margin-bottom: 12px;
 }
 
@@ -87,7 +87,7 @@
 
 .apply-field label {
     font-size: 13px;
-    color: #334155;
+    color: #2D2320;
     font-weight: 600;
 }
 
@@ -97,7 +97,7 @@
 .apply-field input[type="file"],
 .apply-field select {
     padding: 10px 12px;
-    border: 1px solid #dbe4e8;
+    border: 1px solid #E5D9CC;
     border-radius: 10px;
     font-family: inherit;
     font-size: 14px;
@@ -112,7 +112,7 @@
     align-items: center;
     gap: 8px;
     font-size: 13px;
-    color: #5a7480;
+    color: #8A7B6C;
     cursor: pointer;
     margin-bottom: 6px;
 }

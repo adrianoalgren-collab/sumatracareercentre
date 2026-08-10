@@ -5,6 +5,13 @@ function setTab(el) {
         tab.classList.remove('active');
     });
     el.classList.add('active');
+
+    // Sinkronkan tab yang dipilih ke hidden input #role,
+    // supaya nilainya ikut terkirim saat form login di-submit.
+    const roleInput = document.getElementById('role');
+    if (roleInput) {
+        roleInput.value = el.dataset.role;
+    }
 }
 
 // Diperlukan karena tombol role masih memakai atribut onclick="setTab(this)"

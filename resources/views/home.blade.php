@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Sumatra Career Centre</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,600;1,700&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet"/>
 <link rel="stylesheet" href="style.css"/>
 <link rel="stylesheet" href="{{ asset('css/home.css') }}"/>
@@ -19,9 +19,6 @@
 
 <!-- ═══ HERO ═══ -->
 <section class="hero">
-  <div class="hero-geo hero-geo-ring"></div>
-  <div class="hero-geo hero-geo-ring-inner"></div>
-  <div class="hero-geo hero-geo-line"></div>
 
   <img class="hero-img" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCDEg_yuwycErLucfzinzf9qExIurvyl3NdkEhJJmYcsGBsVp6753u6iDPFoGCgXA6B0xW4JivgKj5Ic70HegS61SvFsfNe42-hIvm1mzKOtrn9RDGqq6nzCd0E2zSYnJtk7p29mbiNrOGOdzeFfaVnYoO-9uHMgPemj4x58cF3FFiEg-VSZKCmF0ESw0a-qAkFn2iZHC_V_BA4kbNivirK8VtPhu5jkPaSAMbiWOZbG1ytBg4Zhke41uRwcdhs5EUPwNeV6BBGxQOx" alt="Campus"/>
   <div class="hero-bg"></div>
@@ -34,11 +31,12 @@
   </div>
 
   <h1 class="hero-title">
-    Sumatra Career Centre
+      <em>Platform Karir</em><br>
+      Sumatra Career Centre
   </h1>
 
   <p class="hero-desc">
-    Sumatra Career Centre adalah ekosistem karier modern yang menghubungkan mahasiswa, alumni, dan dunia industri dalam satu platform terpadu.
+    Ekosistem karier modern yang menghubungkan mahasiswa, alumni, dan dunia industri dalam satu platform terpadu.
     Kami membantu membuka akses peluang kerja, pengembangan skill, dan koneksi profesional yang lebih luas untuk membangun masa depan karier yang kompetitif di tingkat nasional maupun global.
   </p>
 
@@ -49,7 +47,6 @@
           <a href="{{ route('login') }}" class="btn-hero-main"
             style="display:inline-flex; align-items:center; gap:8px; text-decoration:none;">
               Login Sebagai Pelamar
-              <span class="material-icons-round" style="font-size:18px;">arrow_forward</span>
           </a>
 
           <a href="" class="btn-hero-sec"
@@ -64,7 +61,6 @@
           <a href="{{ route('lowongan.pekerjaan') }}" class="btn-hero-main"
             style="display:inline-flex; align-items:center; gap:8px; text-decoration:none;">
               Lihat Lowongan
-              <span class="material-icons-round" style="font-size:18px;">arrow_forward</span>
           </a>
 
           <a href="{{ route('profil.saya') }}" class="btn-hero-sec"
@@ -75,62 +71,6 @@
 
   </div>
 
-</div>
-
-<div class="hero-card">
-    <div class="hero-card-label">— Kenapa Memilih SCC</div>
-
-    <ul class="hero-card-list">
-
-        <li class="hero-card-item">
-            <div class="hero-card-icon">
-                <span class="material-icons-round">verified</span>
-            </div>
-            <div>
-                <span class="hero-card-role">Perusahaan Tervalidasi</span>
-                <span class="hero-card-co">
-                    Seluruh mitra telah melalui proses verifikasi resmi
-                </span>
-            </div>
-        </li>
-
-        <li class="hero-card-item">
-            <div class="hero-card-icon">
-                <span class="material-icons-round">bolt</span>
-            </div>
-            <div>
-                <span class="hero-card-role">Proses Rekrutmen Cepat</span>
-                <span class="hero-card-co">
-                    Perekrutan lebih efisien tanpa proses yang berbelit
-                </span>
-            </div>
-        </li>
-
-        <li class="hero-card-item">
-            <div class="hero-card-icon">
-                <span class="material-icons-round">school</span>
-            </div>
-            <div>
-                <span class="hero-card-role">Terintegrasi dengan Kampus</span>
-                <span class="hero-card-co">
-                    Terhubung langsung dengan berbagai perguruan tinggi
-                </span>
-            </div>
-        </li>
-
-        <li class="hero-card-item">
-            <div class="hero-card-icon">
-                <span class="material-icons-round">track_changes</span>
-            </div>
-            <div>
-                <span class="hero-card-role">Rekomendasi Pekerjaan Pintar</span>
-                <span class="hero-card-co">
-                    Sistem menyesuaikan lowongan dengan keahlian Anda
-                </span>
-            </div>
-        </li>
-
-    </ul>
 </div>
 
 </section>
@@ -191,9 +131,7 @@
         <div class="job-card reveal">
 
             <div class="job-card-header">
-                <div class="job-logo">
-                    <img src="{{ asset('storage/' . $item->gambar_banner) }}" alt="banner">
-                </div>
+                
 
                 <div class="job-tags">
                     <span class="tag tag-type">{{ $item->kategori_label }}</span>
@@ -237,82 +175,84 @@
         <h2 class="section-title">Berita & Insight Karier</h2>
       </div>
 
-      <a href="#" class="link-viewall reveal">
+      <a href="{{ route('artikel') }}" class="link-viewall reveal">
         Lihat Semua
         <span class="material-icons-round" style="font-size:14px;">arrow_forward</span>
       </a>
     </div>
 
+    @if($featured)
     <div class="news-grid">
 
       <!-- Featured -->
-      <div class="news-card reveal">
+      <a href="{{ route('artikel.detail', $featured->slug) }}" class="news-card reveal" style="text-decoration:none; color:inherit;">
 
         <div class="news-card-img">
-          <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCtDwN40H-qJgOgPmm5azwIeIJ9LbN2nYQedgPvFYiCoTNNQrgJBZFFdCgWJATKahk8HDWS6tNo1Ql6xBeKsBsY0tGtR4ANyIpqlz__q6valfVFox-2f3RIELi4nEip3F8WMo543j8HmD8zfktUthQdWIT0l5CH3Ek0FFn6NrehhdkFUin4UQeRyKXAl7nPiyqsYvpNRuuk3s4n1rkTSY6UbUz-vUW-LrmRqHs1LhUGuPSndPoqNL7B_NTMOivR0zl_J4GItDrxaM1d" alt="Workshop"/>
+          <img src="{{ $featured->gambar_utama ? asset('storage/'.$featured->gambar_utama) : 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=2000&auto=format&fit=crop' }}" alt="{{ $featured->judul }}"/>
           <div class="news-card-img-overlay"></div>
         </div>
 
         <div class="news-card-body">
 
           <div class="news-meta">
-            <span class="news-cat">Tren Industri</span>
+            <span class="news-cat">{{ $featured->kategori }}</span>
             <span class="news-dot"></span>
-            <span class="news-read">5 Menit Baca</span>
+            <span class="news-read">{{ $featured->waktu_baca_label }}</span>
           </div>
 
           <h3 class="news-title">
-            Transformasi Digital Dunia Kerja di Sumatera: Apa yang Perlu Kamu Ketahui
+            {{ $featured->judul }}
           </h3>
 
           <p class="news-desc">
-            Perkembangan teknologi seperti AI dan otomatisasi mulai mengubah struktur dunia kerja di Indonesia.
-            Lulusan diharapkan mampu beradaptasi agar tetap kompetitif di era digital.
+            {{ $featured->ringkasan }}
           </p>
 
-          <a href="#" class="news-link">
+          <span class="news-link">
             Baca Selengkapnya
             <span class="material-icons-round" style="font-size:14px;">open_in_new</span>
-          </a>
+          </span>
 
         </div>
-      </div>
+      </a>
 
       <!-- Side stack -->
       <div class="news-side">
 
-        <div class="news-card news-card-sm reveal reveal-delay-1">
+        @foreach($sideArticles->take(1) as $item)
+        <a href="{{ route('artikel.detail', $item->slug) }}" class="news-card news-card-sm reveal reveal-delay-1" style="text-decoration:none; color:inherit;">
 
           <div class="news-card-img">
-            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDGwX5O33d8SEDmw6HQ05XE5ppqwzGxL48QZ4UAWmior_mLDLv6M9fGuVqR_QIyMZU9TN4y7jBJqpePxhcVO30CuVhJNyjZdYP-oShSoEvnSLBZH68a9LDjF6yirDyNv0i8JiS6O9esWgZX69itlThFR-vQKjYd1U7o5NUD8sZ1qFdyTCj7VoyMDOb2pjzTZ6hqXb3g-OhDaVDEsYhcCT74UfRfxLFN4iitAl0NW8KKyIcwC9H8KLAWzBnxZdOU7FPbbQqgDBA1ygGH" alt="Networking"/>
+            <img src="{{ $item->gambar_utama ? asset('storage/'.$item->gambar_utama) : 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=1200&auto=format&fit=crop' }}" alt="{{ $item->judul }}"/>
             <div class="news-card-img-overlay"></div>
           </div>
 
           <div class="news-card-body">
 
             <div class="news-meta">
-              <span class="news-cat">Kisah Sukses</span>
+              <span class="news-cat">{{ $item->kategori }}</span>
               <span class="news-dot"></span>
-              <span class="news-read">8 Menit</span>
+              <span class="news-read">{{ $item->waktu_baca_label }}</span>
             </div>
 
             <h3 class="news-title">
-              Dari Kampus ke Dunia Kerja: Kisah Alumni UNAND di Perusahaan Global
+              {{ $item->judul }}
             </h3>
 
             <p class="news-desc">
-              Pengalaman nyata para alumni yang berhasil meniti karier hingga posisi strategis di perusahaan multinasional.
+              {{ $item->ringkasan }}
             </p>
 
-            <a href="#" class="news-link">
+            <span class="news-link">
               Baca Artikel
               <span class="material-icons-round" style="font-size:12px;">open_in_new</span>
-            </a>
+            </span>
 
           </div>
-        </div>
+        </a>
+        @endforeach
 
-        <!-- Newsletter -->
+        <!-- Newsletter (statis, bukan artikel) -->
         <div class="news-card news-card-sm reveal reveal-delay-2"
              style="background:rgba(238,21,42,0.07); border-color:rgba(238,21,42,0.18);">
 
@@ -348,6 +288,11 @@
       </div>
 
     </div>
+    @else
+    <p style="text-align:center; padding:40px 0; color:var(--smoke); font-family:'DM Sans', sans-serif;">
+      Belum ada artikel yang tersedia saat ini.
+    </p>
+    @endif
 
   </div>
 </section>

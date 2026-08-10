@@ -27,14 +27,48 @@
     {{-- Navigation --}}
     <nav class="sidebar-nav">
 
+    @if(auth()->user() && auth()->user()->role === 'perusahaan')
+
+        {{-- ═══════════ MENU KHUSUS PERUSAHAAN ═══════════ --}}
+        <div class="nav-section-label">Main</div>
+
+        <a href="{{ route('perusahaan.dashboard') }}"
+            class="nav-item {{ request()->routeIs('perusahaan.dashboard') ? 'active' : '' }}"
+            data-label="Dashboard">
+                <span class="nav-icon"><i class="fas fa-chart-pie"></i></span>
+                <span class="nav-label">Dashboard</span>
+        </a>
+
+        <a href="{{ route('LowonganPekerjaan.indexLowonganPekerjaan') }}"
+           class="nav-item {{ request()->routeIs('LowonganPekerjaan.*', 'admin.lowongan.*') ? 'active' : '' }}"
+           data-label="Lowongan">
+            <span class="nav-icon"><i class="fas fa-briefcase"></i></span>
+            <span class="nav-label">Lowongan</span>
+        </a>
+
+        {{-- Logout --}}
+        <div class="nav-section-label">Akun</div>
+
+        <form action="{{ route('logout') }}" method="POST">
+            @csrf
+            <button type="submit" class="nav-item logout-btn" data-label="Logout">
+                <span class="nav-icon"><i class="fas fa-sign-out-alt"></i></span>
+                <span class="nav-label">Logout</span>
+            </button>
+        </form>
+
+    @else
+
+        {{-- ═══════════ MENU ADMIN (DEFAULT) ═══════════ --}}
+
         {{-- Main --}}
         <div class="nav-section-label">Main</div>
 
-        <a href=""
-           class="nav-item {{ request()->routeIs('dashboard') ? 'active' : '' }}"
-           data-label="Dashboard">
-            <span class="nav-icon"><i class="fas fa-chart-pie"></i></span>
-            <span class="nav-label">Dashboard</span>
+        <a href="{{ route('admin.dashboard') }}"
+            class="nav-item {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}"
+            data-label="Dashboard">
+                <span class="nav-icon"><i class="fas fa-chart-pie"></i></span>
+                <span class="nav-label">Dashboard</span>
         </a>
 
         <a href="{{ route('LowonganPekerjaan.indexLowonganPekerjaan') }}"
@@ -42,7 +76,6 @@
         data-label="Lowongan Kerja">
             <span class="nav-icon"><i class="fas fa-briefcase"></i></span>
             <span class="nav-label">Lowongan Kerja</span>
-            <span class="nav-badge">24</span>
         </a>
 
         <a href="{{ route('admin.pelamar.index') }}"
@@ -50,7 +83,6 @@
         data-label="Pelamar">
             <span class="nav-icon"><i class="fas fa-users"></i></span>
             <span class="nav-label">Pelamar</span>
-            <span class="nav-badge gold">5</span>
         </a>
 
         <a href="{{ route('admin.artikel.index') }}"
@@ -70,13 +102,12 @@
         {{-- Career Services --}}
         <div class="nav-section-label">Layanan Karir</div>
 
-        <div class="nav-item has-sub {{ request()->routeIs('events.*') ? 'active open' : '' }}"
-             data-label="Event & Seminar"
-             onclick="toggleSub(this)">
-            <span class="nav-icon"><i class="fas fa-calendar-alt"></i></span>
-            <span class="nav-label">Event & Seminar</span>
-            <span class="nav-arrow"><i class="fas fa-chevron-right"></i></span>
-        </div>
+        <a href="{{ route('admin.jadwalinterview.index') }}"
+            class="nav-item {{ request()->routeIs('admin.jadwalinterview.*') ? 'active' : '' }}"
+            data-label="Jadwal Interview">
+                <span class="nav-icon"><i class="fas fa-calendar-alt"></i></span>
+                <span class="nav-label">Jadwal Interview</span>
+        </a>
 
         <div class="nav-submenu {{ request()->routeIs('events.*') ? 'open' : '' }}">
             <a href="" class="nav-subitem {{ request()->routeIs('events.index') ? 'active' : '' }}">Semua Event</a>
@@ -84,47 +115,12 @@
             <a href="" class="nav-subitem">Pendaftaran</a>
         </div>
 
-        <a href=""
-           class="nav-item {{ request()->routeIs('counseling.*') ? 'active' : '' }}"
-           data-label="Konseling Karir">
-            <span class="nav-icon"><i class="fas fa-comments"></i></span>
-            <span class="nav-label">Konseling Karir</span>
-        </a>
-
-        <a href=""
-           class="nav-item {{ request()->routeIs('cv.*') ? 'active' : '' }}"
-           data-label="CV Builder">
-            <span class="nav-icon"><i class="fas fa-file-alt"></i></span>
-            <span class="nav-label">CV Builder</span>
-        </a>
-
-        <a href=""
-           class="nav-item {{ request()->routeIs('training.*') ? 'active' : '' }}"
-           data-label="Pelatihan">
+        <a href="{{ route('admin.career.index') }}"
+           class="nav-item {{ request()->routeIs('admin.career.*') ? 'active' : '' }}"
+           data-label="Career Development">
             <span class="nav-icon"><i class="fas fa-graduation-cap"></i></span>
-            <span class="nav-label">Pelatihan</span>
+            <span class="nav-label">Career Development</span>
         </a>
-
-        {{-- Analytics --}}
-        <div class="nav-section-label">Laporan</div>
-
-        <a href=""
-           class="nav-item {{ request()->routeIs('reports.*') ? 'active' : '' }}"
-           data-label="Laporan & Analitik">
-            <span class="nav-icon"><i class="fas fa-chart-bar"></i></span>
-            <span class="nav-label">Laporan & Analitik</span>
-        </a>
-
-        {{-- System --}}
-        <div class="nav-section-label">Sistem</div>
-
-        <div class="nav-item has-sub {{ request()->routeIs('settings.*') ? 'active open' : '' }}"
-             data-label="Pengaturan"
-             onclick="toggleSub(this)">
-            <span class="nav-icon"><i class="fas fa-cog"></i></span>
-            <span class="nav-label">Pengaturan</span>
-            <span class="nav-arrow"><i class="fas fa-chevron-right"></i></span>
-        </div>
 
         <div class="nav-submenu {{ request()->routeIs('settings.*') ? 'open' : '' }}">
             <a href="" class="nav-subitem {{ request()->routeIs('settings.general') ? 'active' : '' }}">Umum</a>
@@ -142,6 +138,8 @@
                 <span class="nav-label">Logout</span>
             </button>
         </form>
+
+    @endif
 
     </nav>
 
@@ -181,29 +179,13 @@
 
     <div class="topbar-right">
 
-        <button class="topbar-action">
-            <i class="fas fa-bell"></i>
-        </button>
-
-        <button class="topbar-action">
-            <i class="fas fa-envelope"></i>
-        </button>
-
-        <button class="topbar-action">
-            <i class="fas fa-question-circle"></i>
-        </button>
-
-        <div class="topbar-divider"></div>
-
-        <div class="topbar-profile">
+        <div class="topbar-profile" style="pointer-events:none;">
             <div class="topbar-ava">{{ strtoupper(substr(auth()->user()->name ?? 'A', 0, 1)) }}</div>
 
             <div class="topbar-user-info">
                 <span class="topbar-user-name">{{ auth()->user()->name ?? 'Admin Utama' }}</span>
                 <span class="topbar-user-role">{{ auth()->user()->role ?? 'Administrator' }}</span>
             </div>
-
-            <i class="fas fa-chevron-down chevron"></i>
         </div>
 
     </div>

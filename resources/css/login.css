@@ -1,111 +1,359 @@
-    /* ===== Override khusus halaman login: bikin muat 1 layar ===== */
+/* ═══════════════════════════════════════
+   HERO (base — dipindahkan dari app.css
+   karena app.css akan dihapus, halaman
+   login butuh style dasar ini sendiri)
+═══════════════════════════════════════ */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex; align-items: center;
+  overflow: hidden;
+}
 
-    html,
-    body {
-        height: 100%;
-    }
+.hero-bg {
+  position: absolute; inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(74,44,29,0.97)  0%,
+    rgba(74,44,29,0.78)  50%,
+    rgba(94,58,38,0.65) 100%
+  );
+  z-index: 2;
+}
 
+.hero-img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  filter: saturate(0.8);
+}
+
+/* Geometric decorations */
+.hero-geo {
+  position: absolute;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.hero-geo-ring {
+  right: -60px; top: 50%;
+  transform: translateY(-50%);
+  width: 600px; height: 600px;
+  border: 1px solid rgba(232,184,75,0.2);
+  border-radius: 50%;
+}
+
+.hero-geo-ring-inner {
+  right: 60px; top: 50%;
+  transform: translateY(-50%);
+  width: 400px; height: 400px;
+  border: 1px solid rgba(232,184,75,0.1);
+  border-radius: 50%;
+}
+
+.hero-geo-line {
+  bottom: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(232,184,75,0.4), transparent);
+}
+
+.hero-content {
+  position: relative; z-index: 10;
+  max-width: 1280px; margin: 0 auto;
+  padding: 0 48px;
+  padding-top: 70px;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.hero-label {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: 'Barlow', sans-serif;
+  font-size: 0.75rem;
+  color: var(--mint);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+
+.hero-label-bar {
+  width: 28px; height: 1px;
+  background: var(--mint);
+}
+
+.hero-title {
+  font-family: 'Barlow', sans-serif;
+  font-size: clamp(2.5rem, 4.5vw, 4rem);
+  font-weight: 700;
+  color: var(--cream);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: 24px;
+}
+
+.hero-title em {
+  font-style: italic;
+  color: var(--mint);
+}
+
+.hero-desc {
+  font-size: 1.0625rem;
+  font-weight: 300;
+  color: rgba(253,248,243,0.75);
+  line-height: 1.7;
+  margin-bottom: 40px;
+  max-width: 440px;
+}
+
+.hero-btns { display: flex; gap: 16px; flex-wrap: wrap; }
+
+.btn-hero-main {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 16px 32px;
+  background: var(--amber);
+  color: var(--white);
+  font-family: 'Barlow', sans-serif;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  border: none; cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.25s;
+  letter-spacing: 0.02em;
+}
+
+.btn-hero-main:hover {
+  background: var(--rust);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(184,90,24,0.4);
+}
+
+.btn-hero-sec {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 16px 32px;
+  background: transparent;
+  color: var(--cream);
+  font-family: 'Barlow', sans-serif;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  border: 1px solid rgba(253,248,243,0.3);
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.25s;
+}
+
+.btn-hero-sec:hover {
+  border-color: var(--mint);
+  color: var(--mint);
+  background: rgba(232,184,75,0.06);
+}
+
+/* Hero floating card */
+.hero-card {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(24px);
+  border-radius: 16px;
+  padding: 32px;
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-12px); }
+}
+
+.hero-card-label {
+  font-family: 'Barlow', sans-serif;
+  font-size: 0.6875rem;
+  color: var(--mint);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 20px;
+}
+
+.hero-card-list {
+  list-style: none;
+  display: flex; flex-direction: column; gap: 14px;
+}
+
+.hero-card-item {
+  display: flex; align-items: center; gap: 14px;
+  padding: 14px 16px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.hero-card-item:hover {
+  background: rgba(232,184,75,0.1);
+  border-color: rgba(232,184,75,0.25);
+}
+
+.hero-card-icon {
+  width: 40px; height: 40px;
+  background: rgba(232,184,75,0.15);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+.hero-card-icon .material-icons-round { font-size: 18px; color: var(--mint); }
+
+.hero-card-role {
+  font-weight: 500;
+  font-size: 0.9375rem;
+  color: var(--cream);
+  display: block;
+}
+
+.hero-card-co {
+  font-size: 0.8125rem;
+  color: rgba(253,248,243,0.55);
+  display: block;
+  margin-top: 2px;
+}
+
+.hero-card-badge {
+  margin-left: auto;
+  padding: 4px 10px;
+  border-radius: 100px;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  flex-shrink: 0;
+}
+
+.badge-open { background: rgba(184,134,11,0.2);  color: var(--jade); }
+.badge-hot  { background: rgba(210,105,30,0.2);   color: var(--amber); }
+
+
+/* ═══════════════════════════════════════
+   Override khusus halaman login:
+   bikin muat 1 layar
+═══════════════════════════════════════ */
+html,
+body {
+    height: 100%;
+}
+
+.login-page.hero {
+    height: 100vh;
+    min-height: 100vh;
+    max-height: 100vh;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    padding: 0;
+}
+
+.login-page .hero-content {
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+    gap: 40px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+}
+
+.login-page .hero-title {
+    font-size: clamp(3rem, 5vw, 4.2rem);     /* sebelumnya clamp(2.4rem, 4vw, 3.4rem) */
+    line-height: 1.12;
+    margin-bottom: 24px;                     /* sebelumnya 20px */
+}
+
+.login-page .hero-desc {
+    font-size: 1.2rem;                       /* sebelumnya 1.05rem */
+    line-height: 1.75;                       /* sebelumnya 1.7 */
+    margin-bottom: 32px;                     /* sebelumnya 28px */
+    max-width: 520px;                        /* sebelumnya 460px */
+}
+
+.login-page .stats-row {
+    margin-top: 32px;                        /* sebelumnya 28px */
+}
+
+.login-page .stat-num {
+    font-size: 2.4rem;                       /* sebelumnya 1.9rem */
+}
+
+.login-page .hero-label {
+    font-size: 0.95rem;                      /* sebelumnya 0.85rem */
+    margin-bottom: 32px;
+}
+
+/* Kartu login dipadatkan */
+.login-page .hero-card {
+    width: 100%;
+    max-width: 560px;       /* sebelumnya 460px */
+    margin-left: auto;
+    padding: 40px 44px;     /* sebelumnya 26px 30px */
+    max-height: 92vh;
+    overflow-y: auto;
+    box-sizing: border-box;
+}
+
+.login-page .hero-card-label {
+    font-size: 0.8rem;      /* sebelumnya 0.75rem */
+    margin-bottom: 6px;
+}
+
+.login-page .hero-card h2 {
+    font-size: 1.7rem;      /* sebelumnya 1.35rem */
+    margin-bottom: 6px !important;
+}
+
+.login-page .hero-card > p,
+.login-page .hero-card form > p {
+    font-size: 0.95rem !important;   /* sebelumnya 0.82rem */
+    margin-bottom: 20px !important;
+}
+
+.login-page .role-tabs {
+    margin-bottom: 22px;    /* sebelumnya 16px */
+}
+
+.login-page .field-group {
+    margin-bottom: 18px;    /* sebelumnya 12px */
+}
+
+.login-page .field-group label {
+    font-size: 0.9rem;      /* sebelumnya 0.78rem */
+    margin-bottom: 6px;
+}
+
+.login-page .field-group input {
+    padding: 14px 16px;     /* sebelumnya 10px 14px */
+    font-size: 1rem;        /* sebelumnya 0.9rem */
+}
+
+.login-page .btn-hero-main {
+    padding: 16px;          /* sebelumnya 12px */
+    margin-top: 8px;
+    font-size: 1rem;        /* sebelumnya 0.92rem */
+}
+
+.login-page .divider {
+    margin: 22px 0;         /* sebelumnya 16px 0 */
+}
+
+.login-page .register-note {
+    margin-top: 20px;
+    font-size: 0.95rem;     /* sebelumnya 0.85rem */
+}
+
+@media (max-height: 700px) {
     .login-page.hero {
-        height: 100vh;
+        height: auto;
         min-height: 100vh;
-        max-height: 100vh;
-        display: flex;
-        align-items: center;
-        overflow: hidden;
-        padding: 0;
+        padding: 24px 0;
     }
-
-    .login-page .hero-content {
-        width: 100%;
-        gap: 40px;
-    }
-
-    .login-page .hero-title {
-        font-size: clamp(1.9rem, 3vw, 2.6rem);
-        line-height: 1.15;
-        margin-bottom: 12px;
-    }
-
-    .login-page .hero-desc {
-        font-size: 0.92rem;
-        line-height: 1.5;
-        margin-bottom: 20px;
-        max-width: 420px;
-    }
-
-    .login-page .stats-row {
-        margin-top: 20px;
-    }
-
-    .login-page .stat-num {
-        font-size: 1.4rem;
-    }
-
-    /* Kartu login dipadatkan */
-    .login-page .hero-card {
-        padding: 26px 30px;
-        max-height: 92vh;
-        overflow-y: auto;
-    }
-
-    .login-page .hero-card-label {
-        font-size: 0.75rem;
-        margin-bottom: 4px;
-    }
-
-    .login-page .hero-card h2 {
-        font-size: 1.35rem;
-        margin-bottom: 4px !important;
-    }
-
-    .login-page .hero-card > p,
-    .login-page .hero-card form > p {
-        font-size: 0.82rem !important;
-        margin-bottom: 16px !important;
-    }
-
-    .login-page .role-tabs {
-        margin-bottom: 16px;
-    }
-
-    .login-page .field-group {
-        margin-bottom: 12px;
-    }
-
-    .login-page .field-group label {
-        font-size: 0.78rem;
-        margin-bottom: 4px;
-        display: block;
-    }
-
-    .login-page .field-group input {
-        padding: 10px 14px;
-        font-size: 0.9rem;
-    }
-
-    .login-page .btn-hero-main {
-        padding: 12px;
-        margin-top: 4px;
-        font-size: 0.92rem;
-    }
-
-    .login-page .divider {
-        margin: 16px 0;
-    }
-
-    .login-page .social-grid {
-        margin-bottom: 4px;
-    }
-
-    .login-page .register-note {
-        margin-top: 14px;
-        font-size: 0.85rem;
-    }
-
-    @media (max-height: 700px) {
-        .login-page.hero {
-            height: auto;
-            min-height: 100vh;
-            padding: 24px 0;
-        }
-    }
+    
+}

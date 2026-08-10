@@ -6,9 +6,20 @@ use Illuminate\Http\Request;
 use App\Models\Perusahaan;
 use App\Models\LowonganPekerjaan;
 use App\Models\Lamaran;
+use Illuminate\Support\Facades\Auth;
 
 class LowonganPekerjaanController extends Controller
 {
+    /*
+    |--------------------------------------------------------------------------
+    | HELPER: Ambil data perusahaan milik user yang sedang login
+    |--------------------------------------------------------------------------
+    */
+    private function perusahaanSaya()
+    {
+        return Perusahaan::where('user_id', Auth::id())->first();
+    }
+
     /*
     |--------------------------------------------------------------------------
     | HALAMAN LIST LOWONGAN FRONTEND
@@ -107,22 +118,47 @@ class LowonganPekerjaanController extends Controller
     | HALAMAN ADMIN CRUD
     |--------------------------------------------------------------------------
     */
-    public function adminIndex()
+    public function adminIndex(Request $request)
     {
-        $lowongan = LowonganPekerjaan::with('perusahaan')
+        $query = LowonganPekerjaan::with('perusahaan')
             ->withCount('lamaran')
-            ->latest()
-            ->get();
+            ->latest();
+
+        if (Auth::user()->role === 'perusahaan') {
+            $perusahaan = $this->perusahaanSaya();
+            $query->where('perusahaan_id', $perusahaan->id ?? 0);
+        }
+
+        if ($request->filled('search')) {
+            $query->where('judul_lowongan', 'like', '%' . $request->search . '%');
+        }
+
+        if ($request->filled('status') && $request->status !== 'semua') {
+            $query->where('status_lowongan', $request->status);
+        }
+
+        // JUMLAH DATA PER HALAMAN (default 10, bisa dipilih user)
+        $perPageOptions = [10, 25, 50, 100];
+        $perPage = (int) $request->get('per_page', 10);
+
+        if (!in_array($perPage, $perPageOptions)) {
+            $perPage = 10;
+        }
+
+        $lowongan = $query->paginate($perPage)->withQueryString();
 
         return view(
             'LowonganPekerjaan.indexLowonganPekerjaan',
-            compact('lowongan')
+            compact('lowongan', 'perPage', 'perPageOptions')
         );
     }
 
     public function tambahLowonganPekerjaan()
     {
-        $perusahaan = Perusahaan::all();
+        // Admin bisa pilih perusahaan mana saja, perusahaan tidak perlu (otomatis dirinya sendiri)
+        $perusahaan = Auth::user()->role === 'admin'
+            ? Perusahaan::all()
+            : collect();
 
         return view(
             'LowonganPekerjaan.tambahLowonganPekerjaan',
@@ -139,11 +175,23 @@ class LowonganPekerjaanController extends Controller
             'syaratUmum'
         ])->findOrFail($id);
 
-        $perusahaan = Perusahaan::all();
+        $isPerusahaan = Auth::user()->role === 'perusahaan';
+
+        if ($isPerusahaan) {
+            $perusahaanSaya = $this->perusahaanSaya();
+
+            if (!$perusahaanSaya || $lowongan->perusahaan_id !== $perusahaanSaya->id) {
+                abort(403, 'Anda tidak memiliki akses ke lowongan ini');
+            }
+
+            $perusahaan = collect([$perusahaanSaya]);
+        } else {
+            $perusahaan = Perusahaan::all();
+        }
 
         return view(
             'LowonganPekerjaan.editLowonganPekerjaan',
-            compact('lowongan', 'perusahaan')
+            compact('lowongan', 'perusahaan', 'isPerusahaan')
         );
     }
 
@@ -154,6 +202,27 @@ class LowonganPekerjaanController extends Controller
     */
     public function store(Request $request)
     {
+        /*
+        |--------------------------------------------------------------------------
+        | TENTUKAN PERUSAHAAN_ID
+        |--------------------------------------------------------------------------
+        | Kalau yang login perusahaan, paksa pakai perusahaan miliknya sendiri
+        | (jangan percaya input dari form, supaya tidak bisa posting atas nama
+        | perusahaan lain).
+        |--------------------------------------------------------------------------
+        */
+        if (Auth::user()->role === 'perusahaan') {
+            $perusahaan = $this->perusahaanSaya();
+
+            if (!$perusahaan) {
+                abort(403, 'Akun perusahaan Anda belum terdaftar dengan benar');
+            }
+
+            $perusahaanId = $perusahaan->id;
+        } else {
+            $perusahaanId = $request->perusahaan_id;
+        }
+
         /*
         |--------------------------------------------------------------------------
         | UPLOAD GAMBAR BANNER
@@ -175,7 +244,7 @@ class LowonganPekerjaanController extends Controller
         |--------------------------------------------------------------------------
         */
         $lowongan = LowonganPekerjaan::create([
-            'perusahaan_id' => $request->perusahaan_id,
+            'perusahaan_id' => $perusahaanId,
             'judul_lowongan' => $request->judul_lowongan,
             'lokasi' => $request->lokasi,
             'kategori_label' => $request->kategori_label,
@@ -248,6 +317,15 @@ class LowonganPekerjaanController extends Controller
     {
         $data = LowonganPekerjaan::findOrFail($id);
 
+        // Perusahaan hanya boleh update lowongan miliknya sendiri
+        if (Auth::user()->role === 'perusahaan') {
+            $perusahaan = $this->perusahaanSaya();
+
+            if (!$perusahaan || $data->perusahaan_id !== $perusahaan->id) {
+                abort(403, 'Anda tidak memiliki akses ke lowongan ini');
+            }
+        }
+
         /*
         |--------------------------------------------------------------------------
         | UPLOAD GAMBAR (OPTIONAL)
@@ -270,9 +348,15 @@ class LowonganPekerjaanController extends Controller
         |--------------------------------------------------------------------------
         | UPDATE DATA UTAMA
         |--------------------------------------------------------------------------
+        | perusahaan_id sengaja TIDAK diambil dari $request->perusahaan_id kalau
+        | yang login adalah perusahaan, supaya lowongan tidak bisa dipindah
+        | kepemilikan ke perusahaan lain.
+        |--------------------------------------------------------------------------
         */
         $data->update([
-            'perusahaan_id' => $request->perusahaan_id,
+            'perusahaan_id' => Auth::user()->role === 'perusahaan'
+                ? $data->perusahaan_id
+                : $request->perusahaan_id,
             'judul_lowongan' => $request->judul_lowongan,
             'lokasi' => $request->lokasi,
             'kategori_label' => $request->kategori_label,
@@ -298,6 +382,15 @@ class LowonganPekerjaanController extends Controller
     {
         $data = LowonganPekerjaan::findOrFail($id);
 
+        // Perusahaan hanya boleh hapus lowongan miliknya sendiri
+        if (Auth::user()->role === 'perusahaan') {
+            $perusahaan = $this->perusahaanSaya();
+
+            if (!$perusahaan || $data->perusahaan_id !== $perusahaan->id) {
+                abort(403, 'Anda tidak memiliki akses ke lowongan ini');
+            }
+        }
+
         $data->delete();
 
         return redirect()
@@ -315,6 +408,15 @@ class LowonganPekerjaanController extends Controller
     public function toggleStatus($id)
     {
         $data = LowonganPekerjaan::findOrFail($id);
+
+        // Perusahaan hanya boleh ubah status lowongan miliknya sendiri
+        if (Auth::user()->role === 'perusahaan') {
+            $perusahaan = $this->perusahaanSaya();
+
+            if (!$perusahaan || $data->perusahaan_id !== $perusahaan->id) {
+                abort(403, 'Anda tidak memiliki akses ke lowongan ini');
+            }
+        }
 
         $statusBaru = $data->status_lowongan === 'aktif' ? 'tutup' : 'aktif';
 
@@ -334,6 +436,15 @@ class LowonganPekerjaanController extends Controller
      */
     public function pelamar(LowonganPekerjaan $lowongan)
     {
+        // Perusahaan hanya boleh lihat pelamar dari lowongan miliknya sendiri
+        if (Auth::user()->role === 'perusahaan') {
+            $perusahaan = $this->perusahaanSaya();
+
+            if (!$perusahaan || $lowongan->perusahaan_id !== $perusahaan->id) {
+                abort(403, 'Anda tidak memiliki akses ke lowongan ini');
+            }
+        }
+
         $daftarLamaran = $lowongan->lamaran()
             ->with(['user', 'document'])
             ->latest()
@@ -359,6 +470,16 @@ class LowonganPekerjaanController extends Controller
      */
     public function updateStatusPelamar(Request $request, Lamaran $lamaran)
     {
+        // Perusahaan hanya boleh ubah status pelamar dari lowongan miliknya sendiri
+        if (Auth::user()->role === 'perusahaan') {
+            $perusahaan = $this->perusahaanSaya();
+            $lowonganPemilik = $lamaran->lowongan;
+
+            if (!$perusahaan || !$lowonganPemilik || $lowonganPemilik->perusahaan_id !== $perusahaan->id) {
+                abort(403, 'Anda tidak memiliki akses ke pelamar ini');
+            }
+        }
+
         $request->validate([
             'status' => ['required', 'in:pending,interview,diterima,ditolak'],
         ]);

@@ -34,6 +34,7 @@ class LoginController extends Controller
         $request->validate([
             'email' => 'required|email',
             'password' => 'required|min:6',
+            'role' => 'required|in:pelamar,perusahaan,admin',
         ]);
 
         /*
@@ -52,6 +53,18 @@ class LoginController extends Controller
 
         if (Auth::attempt($credentials, $remember)) {
 
+            $user = Auth::user();
+
+            // Pastikan tab role yang dipilih di form sesuai dengan role akun.
+            // Mencegah, misalnya, akun pelamar login lewat tab "Admin".
+            if ($user->role !== $request->role) {
+                Auth::logout();
+
+                return back()
+                    ->with('error', 'Role yang dipilih tidak sesuai dengan akun ini. Silakan pilih tab yang benar.')
+                    ->withInput($request->only('email', 'role'));
+            }
+
             // regenerate session (security)
             $request->session()->regenerate();
 
@@ -66,7 +79,7 @@ class LoginController extends Controller
 
         return back()
             ->with('error', 'Email atau password salah.')
-            ->withInput();
+            ->withInput($request->only('email', 'role'));
     }
 
     /**
@@ -102,7 +115,7 @@ class LoginController extends Controller
 
         if ($user->role === 'perusahaan') {
             return redirect()
-                ->route('perusahaan.dashboard')
+                ->route('about.us')
                 ->with('success', 'Selamat datang Perusahaan!');
         }
 

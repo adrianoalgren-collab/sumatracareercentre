@@ -12,6 +12,7 @@ class Perusahaan extends Model
     protected $table = 'perusahaan';
 
     protected $fillable = [
+        'user_id',
         'nama_perusahaan',
         'email_perusahaan',
         'telepon_perusahaan',
@@ -19,6 +20,11 @@ class Perusahaan extends Model
         'website_perusahaan',
         'status_perusahaan',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function lowonganPekerjaan()
     {

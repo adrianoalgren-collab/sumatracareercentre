@@ -6,9 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sumatra Career Centre — Daftar</title>
 
-    <link
-        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800;900&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap"
-        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,600;1,700&display=swap" rel="stylesheet"/>
 
     @vite(['resources/css/app.css', 'resources/css/register.css', 'resources/js/app.js', 'resources/js/register.js'])
 </head>
@@ -42,7 +40,7 @@
 
                 <div class="hero-label">
                     <span class="hero-label-bar"></span>
-                    Registrasi Pelamar
+                    Registrasi Akun
                 </div>
 
                 <h1 class="hero-title">
@@ -84,10 +82,6 @@
 
                 <div class="hero-card">
 
-                    <div class="hero-card-label">
-                        Register Portal
-                    </div>
-
                     <h2 class="job-title" style="color: var(--cream);">
                         Buat Akun Baru
                     </h2>
@@ -105,7 +99,6 @@
                     <form action="{{ route('register.store') }}" method="POST">
                         @csrf
 
-                        <!-- Halaman ini khusus registrasi pelamar -->
                         <input type="hidden" name="role" value="pelamar">
 
                         <!-- Nama & Email berdampingan -->

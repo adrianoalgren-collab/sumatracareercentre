@@ -6,9 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sumatra Career Centre — Masuk</title>
 
-    <link
-        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800;900&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap"
-        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,600;1,700&display=swap" rel="stylesheet"/>
 
     @vite(['resources/css/app.css', 'resources/css/login.css', 'resources/js/app.js', 'resources/js/login.js'])
 </head>
@@ -82,15 +80,11 @@
 
                 <div class="hero-card">
 
-                    <div class="hero-card-label">
-                        Login Portal
-                    </div>
-
                     <h2 class="job-title" style="color: var(--cream);">
                         Selamat Datang Kembali
                     </h2>
 
-                    <p style="color: rgba(242,246,248,0.65);">
+                    <p style="color: rgba(242,246,248,0.65); margin-bottom: 22px; padding-bottom: 22px; border-bottom: 1px solid rgba(242,246,248,0.1);">
                         Masuk ke akun Anda untuk melanjutkan.
                     </p>
 
@@ -112,16 +106,22 @@
                         @endif
 
                         <!-- Role Tabs -->
+                        <p style="color: rgba(242,246,248,0.5); font-size: 12px; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.06em;">
+                            Pilih jenis akun Anda
+                        </p>
+
+                        <input type="hidden" name="role" id="role" value="{{ old('role', 'pelamar') }}">
+
                         <div class="role-tabs">
-                            <button type="button" class="role-tab active" onclick="setTab(this)">
+                            <button type="button" class="role-tab {{ old('role', 'pelamar') === 'pelamar' ? 'active' : '' }}" data-role="pelamar" onclick="setTab(this)">
                                 Pelamar
                             </button>
 
-                            <button type="button" class="role-tab" onclick="setTab(this)">
+                            <button type="button" class="role-tab {{ old('role') === 'perusahaan' ? 'active' : '' }}" data-role="perusahaan" onclick="setTab(this)">
                                 Perusahaan
                             </button>
 
-                            <button type="button" class="role-tab" onclick="setTab(this)">
+                            <button type="button" class="role-tab {{ old('role') === 'admin' ? 'active' : '' }}" data-role="admin" onclick="setTab(this)">
                                 Admin
                             </button>
                         </div>
@@ -146,10 +146,7 @@
 
                         <!-- Password -->
                         <div class="field-group">
-                            <div class="field-row">
-                                <label for="password">Kata Sandi</label>
-                                <a href="#" class="forgot">Lupa sandi?</a>
-                            </div>
+                            <label for="password">Kata Sandi</label>
 
                             <input
                                 type="password"
@@ -162,14 +159,10 @@
                             @error('password')
                                 <small style="color:#ffb3b3;">{{ $message }}</small>
                             @enderror
-                        </div>
 
-                        <!-- Remember Me -->
-                        <div style="display:flex; align-items:center; gap:10px; margin-bottom:18px;">
-                            <input type="checkbox" id="remember" name="remember" style="width:16px; height:16px;">
-                            <label for="remember" style="color: rgba(242,246,248,0.75); font-size: 13px; cursor: pointer;">
-                                Ingat saya
-                            </label>
+                            <a href="#" class="forgot" style="display:block; margin-top:8px; text-align:right; color: var(--cream);">
+                                Lupa sandi?
+                            </a>
                         </div>
 
                         <button type="submit" class="btn-hero-main" style="width:100%; justify-content:center;">
@@ -177,18 +170,7 @@
                         </button>
                     </form>
 
-                    <div class="divider">
-                        <div class="divider-line"></div>
-                        <span class="divider-text">atau lanjutkan dengan</span>
-                        <div class="divider-line"></div>
-                    </div>
-
-                    <div class="social-grid">
-                        <button class="social-btn-login" type="button">Google</button>
-                        <button class="social-btn-login" type="button">LinkedIn</button>
-                    </div>
-
-                    <p class="register-note">
+                    <p class="register-note" style="margin-top: 18px; padding-top: 18px; border-top: 1px solid rgba(242,246,248,0.12);">
                         Belum punya akun?
                         <a href="{{ route('register') }}">Daftarkan karir Anda</a>
                     </p>

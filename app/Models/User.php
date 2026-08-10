@@ -68,6 +68,11 @@ class User extends Authenticatable
         return $this->hasMany(Document::class)->latest();
     }
 
+    public function perusahaan()
+    {
+        return $this->hasOne(Perusahaan::class);
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Role Helpers

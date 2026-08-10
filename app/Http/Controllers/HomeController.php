@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\LowonganPekerjaan;
+use App\Models\Artikel; // ADDED — sesuaikan namespace/nama model kalau beda
 
 class HomeController extends Controller
 {
@@ -15,6 +16,16 @@ class HomeController extends Controller
             ->take(3)
             ->get();
 
-        return view('home', compact('lowongan'));
+        // ADDED — ambil artikel terbaru untuk section berita di homepage
+        $featured = Artikel::latest()->first();
+
+        $sideArticles = Artikel::when($featured, function ($query) use ($featured) {
+                $query->where('id', '!=', $featured->id);
+            })
+            ->latest()
+            ->take(1)
+            ->get();
+
+        return view('home', compact('lowongan', 'featured', 'sideArticles'));
     }
 }

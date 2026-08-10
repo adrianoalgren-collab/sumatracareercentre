@@ -46,18 +46,20 @@
 
                 <div class="form-group">
                     <label>Perusahaan</label>
-                    <select name="perusahaan_id" class="form-control" required>
-                        <option value="">-- Pilih Perusahaan --</option>
 
-                        @foreach ($perusahaan as $item)
-                            <option
-                                value="{{ $item->id }}"
-                                {{ $lowongan->perusahaan_id == $item->id ? 'selected' : '' }}
-                            >
-                                {{ $item->nama_perusahaan }}
-                            </option>
-                        @endforeach
-                    </select>
+                    @if ($isPerusahaan)
+                        <input type="text" class="form-control" value="{{ $lowongan->perusahaan->nama_perusahaan }}" disabled>
+                        <input type="hidden" name="perusahaan_id" value="{{ $lowongan->perusahaan_id }}">
+                    @else
+                        <select name="perusahaan_id" class="form-control" required>
+                            <option value="">-- Pilih Perusahaan --</option>
+                            @foreach ($perusahaan as $item)
+                                <option value="{{ $item->id }}" {{ $lowongan->perusahaan_id == $item->id ? 'selected' : '' }}>
+                                    {{ $item->nama_perusahaan }}
+                                </option>
+                            @endforeach
+                        </select>
+                    @endif
                 </div>
 
                 <div class="form-group">

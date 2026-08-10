@@ -37,17 +37,33 @@
                     <input type="text" name="judul_lowongan" class="form-control" required>
                 </div>
 
-                <div class="form-group">
+               <div class="form-group">
                     <label>Perusahaan</label>
-                    <select name="perusahaan_id" class="form-control" required>
-                        <option value="">-- Pilih Perusahaan --</option>
 
-                        @foreach ($perusahaan as $item)
-                            <option value="{{ $item->id }}">
-                                {{ $item->nama_perusahaan }}
-                            </option>
-                        @endforeach
-                    </select>
+                    @if(auth()->user()->role === 'perusahaan')
+                        {{-- Perusahaan login: tampilkan nama sendiri, tidak bisa diganti --}}
+                        <input type="text"
+                               class="form-control"
+                               value="{{ auth()->user()->perusahaan->nama_perusahaan ?? '-' }}"
+                               disabled>
+
+                        {{-- Kirim tetap perusahaan_id miliknya sendiri            --}}
+                        {{-- (input/select yang "disabled" tidak ikut ter-submit)  --}}
+                        <input type="hidden"
+                               name="perusahaan_id"
+                               value="{{ auth()->user()->perusahaan->id ?? '' }}">
+                    @else
+                        {{-- Admin: bebas pilih perusahaan mana saja --}}
+                        <select name="perusahaan_id" class="form-control" required>
+                            <option value="">-- Pilih Perusahaan --</option>
+
+                            @foreach ($perusahaan as $item)
+                                <option value="{{ $item->id }}">
+                                    {{ $item->nama_perusahaan }}
+                                </option>
+                            @endforeach
+                        </select>
+                    @endif
                 </div>
 
                 <div class="form-group">

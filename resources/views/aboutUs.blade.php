@@ -8,9 +8,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
 
-    <link
-        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800&family=Playfair+Display:wght@700;800&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,600;1,700&display=swap" rel="stylesheet"/>
 
     <link
         href="https://fonts.googleapiscom/icon?family=Material+Icons+Round"
@@ -45,33 +43,53 @@
                     class="section-title"
                     style="font-size: clamp(2.5rem,5vw,4.5rem); margin-bottom:20px;"
                 >
-                    Building Careers,<br>
-                    Creating Futures.
+                    @if ($isPerusahaan)
+                        Menemukan Talenta,<br>
+                        Membangun Tim Terbaik.
+                    @else
+                        Building Careers,<br>
+                        Creating Futures.
+                    @endif
                 </h1>
 
                 <p
                     class="section-sub"
                     style="max-width:560px; margin-bottom:32px;"
                 >
-                    Sumatra Career Centre hadir sebagai pusat pengembangan karir modern
-                    yang menghubungkan mahasiswa, alumni, dan industri melalui ekosistem
-                    profesional yang terintegrasi.
+                    @if ($isPerusahaan)
+                        Sumatra Career Centre menghubungkan perusahaan Anda dengan ribuan
+                        talenta terbaik dari mahasiswa dan alumni Politeknik Caltex Riau
+                        melalui proses rekrutmen yang efektif dan terpercaya.
+                    @else
+                        Sumatra Career Centre hadir sebagai pusat pengembangan karir modern
+                        yang menghubungkan mahasiswa, alumni, dan industri melalui ekosistem
+                        profesional yang terintegrasi.
+                    @endif
                 </p>
 
                 <div class="hero-btns">
-                    <a href="{{ route('lowongan.pekerjaan') }}" class="btn-hero-main" style="text-decoration:none;">
-                        Explore Careers
-                    </a>
-
-                  @auth
-                        <a href="{{ route('profil.saya') }}" class="btn-hero-sec" style="color:#004B5F; border-color:#004B5F; text-decoration:none;">
-                            Lihat Profil Saya
+                    @if ($isPerusahaan)
+                        <a href="{{ route('career.index') }}" class="btn-hero-main" style="text-decoration:none;">
+                            Cari Talenta
+                        </a>
+                        <a href="{{ route('admin.dashboard') }}" class="btn-hero-sec" style="color:#004B5F; border-color:#004B5F; text-decoration:none;">
+                            Dashboard Saya
                         </a>
                     @else
-                        <a href="{{ route('register') }}" class="btn-hero-sec" style="color:#004B5F; border-color:#004B5F; text-decoration:none;">
-                            Gabung Bersama Kami
+                        <a href="{{ route('lowongan.pekerjaan') }}" class="btn-hero-main" style="text-decoration:none;">
+                            Explore Careers
                         </a>
-                    @endauth
+
+                        @auth
+                            <a href="{{ route('profil.saya') }}" class="btn-hero-sec" style="color:#004B5F; border-color:#004B5F; text-decoration:none;">
+                                Lihat Profil Saya
+                            </a>
+                        @else
+                            <a href="{{ route('register') }}" class="btn-hero-sec" style="color:#004B5F; border-color:#004B5F; text-decoration:none;">
+                                Gabung Bersama Kami
+                            </a>
+                        @endauth
+                    @endif
                 </div>
             </div>
 
@@ -90,7 +108,11 @@
                     </h3>
 
                     <p style="color:#5a7480;">
-                        Alumni telah terhubung dengan peluang kerja terbaik di berbagai industri.
+                        @if ($isPerusahaan)
+                            Talenta siap kerja yang dapat Anda jangkau melalui platform ini.
+                        @else
+                            Alumni telah terhubung dengan peluang kerja terbaik di berbagai industri.
+                        @endif
                     </p>
                 </div>
             </div>
@@ -154,224 +176,243 @@
     </section>
 
 
-    <!-- VALUES SECTION -->
-<!-- VISI MISI SECTION -->
-<section class="section news-section">
-    <div class="section-inner">
+    <!-- VISI MISI SECTION -->
+    <section class="section news-section">
+        <div class="section-inner">
 
-        <div class="section-header">
-            <div>
-                <div class="section-eyebrow">
-                    Our Purpose
-                </div>
+            <div class="section-header">
+                <div>
+                    <div class="section-eyebrow">
+                        Our Purpose
+                    </div>
 
-                <h2 class="section-title">
-                    Visi & Misi Kami
-                </h2>
-            </div>
-        </div>
-
-        <div style="display:grid; grid-template-columns:repeat(2,1fr); gap:24px;">
-
-            <!-- Visi -->
-            <div class="news-card" style="grid-column: span 2;">
-                <div class="news-card-body">
-                    <h3 class="news-title" style="font-size:1.75rem; margin-bottom:16px;">
-                        Visi
-                    </h3>
-
-                    <p class="news-desc" style="font-size:1.15rem; line-height:1.7;">
-                        Menjadi institusi karir yang mewadahi para alumni yang berbasis IT
-                        dalam menyajikan informasi karir, pengembangan diri, dan pelayanan
-                        rekrutmen.
-                    </p>
+                    <h2 class="section-title">
+                        Visi & Misi Kami
+                    </h2>
                 </div>
             </div>
 
-            <!-- Misi 1 -->
-            <div class="news-card">
-                <div class="news-card-body">
-                    <h3 class="news-title" style="font-size:1.4rem; margin-bottom:14px;">
-                        Misi 01
-                    </h3>
+            <div style="display:grid; grid-template-columns:repeat(2,1fr); gap:24px;">
 
-                    <p class="news-desc" style="font-size:1.05rem; line-height:1.7;">
-                        Membangun organisasi yang mewadahi alumni dan menjadi tempat
-                        untuk menjalin komunikasi dan silaturahmi bagi alumni.
-                    </p>
-                </div>
-            </div>
+                <!-- Visi -->
+                <div class="news-card" style="grid-column: span 2;">
+                    <div class="news-card-body">
+                        <h3 class="news-title" style="font-size:1.75rem; margin-bottom:16px;">
+                            Visi
+                        </h3>
 
-            <!-- Misi 2 -->
-            <div class="news-card">
-                <div class="news-card-body">
-                    <h3 class="news-title" style="font-size:1.4rem; margin-bottom:14px;">
-                        Misi 02
-                    </h3>
-
-                    <p class="news-desc" style="font-size:1.05rem; line-height:1.7;">
-                        Menjadi career center pertama yang mengedepankan inovasi,
-                        profesionalisme, saling menghargai, dan religius.
-                    </p>
-                </div>
-            </div>
-
-            <!-- Misi 3 -->
-            <div class="news-card">
-                <div class="news-card-body">
-                    <h3 class="news-title" style="font-size:1.4rem; margin-bottom:14px;">
-                        Misi 03
-                    </h3>
-
-                    <p class="news-desc" style="font-size:1.05rem; line-height:1.7;">
-                        Memberikan informasi rekrutmen dan karir yang terpercaya,
-                        serta program pengembangan diri kepada mahasiswa dan alumni.
-                    </p>
-                </div>
-            </div>
-
-            <!-- Misi 4 -->
-            <div class="news-card">
-                <div class="news-card-body">
-                    <h3 class="news-title" style="font-size:1.4rem; margin-bottom:14px;">
-                        Misi 04
-                    </h3>
-
-                    <p class="news-desc" style="font-size:1.05rem; line-height:1.7;">
-                        Memberikan layanan rekrutmen yang efektif dan solutif
-                        kepada perusahaan.
-                    </p>
-                </div>
-            </div>
-
-            <!-- Misi 5 -->
-            <div class="news-card" style="grid-column: span 2;">
-                <div class="news-card-body">
-                    <h3 class="news-title" style="font-size:1.4rem; margin-bottom:14px;">
-                        Misi 05
-                    </h3>
-
-                    <p class="news-desc" style="font-size:1.05rem; line-height:1.7;">
-                        Memberikan dukungan pada kampus dalam pengembangan karir
-                        mahasiswa dan alumni, serta kerja sama dengan dunia industri.
-                    </p>
-                </div>
-            </div>
-
-        </div>
-    </div>
-</section>
-
-
-    <!-- TESTIMONIAL SECTION -->
-    <!-- TESTIMONIAL SECTION -->
-<section
-    class="section"
-    style="background:#f8fbfc;"
->
-    <div class="section-inner">
-
-        <div class="section-header">
-            <div>
-                <div class="section-eyebrow">
-                    Testimonials
+                        <p class="news-desc" style="font-size:1.15rem; line-height:1.7;">
+                            Menjadi institusi karir yang mewadahi para alumni yang berbasis IT
+                            dalam menyajikan informasi karir, pengembangan diri, dan pelayanan
+                            rekrutmen.
+                        </p>
+                    </div>
                 </div>
 
-                <h2 class="section-title">
-                    Apa Kata Mereka
-                </h2>
+                <!-- Misi 1 -->
+                <div class="news-card">
+                    <div class="news-card-body">
+                        <h3 class="news-title" style="font-size:1.4rem; margin-bottom:14px;">
+                            Misi 01
+                        </h3>
 
-                <p class="section-sub">
-                    Dengarkan pengalaman mahasiswa, alumni, dan mitra perusahaan
-                    yang telah berkembang bersama Sumatra Career Centre.
-                </p>
-            </div>
-        </div>
+                        <p class="news-desc" style="font-size:1.05rem; line-height:1.7;">
+                            Membangun organisasi yang mewadahi alumni dan menjadi tempat
+                            untuk menjalin komunikasi dan silaturahmi bagi alumni.
+                        </p>
+                    </div>
+                </div>
 
-        <div
-            style="display:grid; grid-template-columns:repeat(3,1fr); gap:28px;"
-        >
+                <!-- Misi 2 -->
+                <div class="news-card">
+                    <div class="news-card-body">
+                        <h3 class="news-title" style="font-size:1.4rem; margin-bottom:14px;">
+                            Misi 02
+                        </h3>
 
-            <div class="job-card">
-                <p class="section-sub" style="font-style:italic; margin-bottom:20px;">
-                    "SCC membantu saya mendapatkan pekerjaan bahkan sebelum wisuda.
-                    Sistemnya sangat membantu dan profesional."
-                </p>
+                        <p class="news-desc" style="font-size:1.05rem; line-height:1.7;">
+                            Menjadi career center pertama yang mengedepankan inovasi,
+                            profesionalisme, saling menghargai, dan religius.
+                        </p>
+                    </div>
+                </div>
 
-                <h3 class="job-title">
-                    Adinda Pertiwi
-                </h3>
+                <!-- Misi 3 -->
+                <div class="news-card">
+                    <div class="news-card-body">
+                        <h3 class="news-title" style="font-size:1.4rem; margin-bottom:14px;">
+                            Misi 03
+                        </h3>
 
-                <p class="job-company">
-                    Alumni Universitas Andalas
-                </p>
-            </div>
+                        <p class="news-desc" style="font-size:1.05rem; line-height:1.7;">
+                            Memberikan informasi rekrutmen dan karir yang terpercaya,
+                            serta program pengembangan diri kepada mahasiswa dan alumni.
+                        </p>
+                    </div>
+                </div>
 
-            <div class="job-card">
-                <p class="section-sub" style="font-style:italic; margin-bottom:20px;">
-                    "Kami menemukan banyak kandidat berkualitas melalui platform ini.
-                    Sangat efektif untuk proses rekrutmen."
-                </p>
+                <!-- Misi 4 -->
+                <div class="news-card">
+                    <div class="news-card-body">
+                        <h3 class="news-title" style="font-size:1.4rem; margin-bottom:14px;">
+                            Misi 04
+                        </h3>
 
-                <h3 class="job-title">
-                    Budi Santoso
-                </h3>
+                        <p class="news-desc" style="font-size:1.05rem; line-height:1.7;">
+                            Memberikan layanan rekrutmen yang efektif dan solutif
+                            kepada perusahaan.
+                        </p>
+                    </div>
+                </div>
 
-                <p class="job-company">
-                    HR Manager - Tech Company
-                </p>
-            </div>
+                <!-- Misi 5 -->
+                <div class="news-card" style="grid-column: span 2;">
+                    <div class="news-card-body">
+                        <h3 class="news-title" style="font-size:1.4rem; margin-bottom:14px;">
+                            Misi 05
+                        </h3>
 
-            <div class="job-card">
-                <p class="section-sub" style="font-style:italic; margin-bottom:20px;">
-                    "Proses melamar jadi jauh lebih mudah dan transparan.
-                    Saya bisa pantau status lamaran kapan saja."
-                </p>
+                        <p class="news-desc" style="font-size:1.05rem; line-height:1.7;">
+                            Memberikan dukungan pada kampus dalam pengembangan karir
+                            mahasiswa dan alumni, serta kerja sama dengan dunia industri.
+                        </p>
+                    </div>
+                </div>
 
-                <h3 class="job-title">
-                    Rina Wulandari
-                </h3>
-
-                <p class="job-company">
-                    Alumni Universitas Riau
-                </p>
-            </div>
-
-        </div>
-    </div>
-</section>
-
-
-    <!-- CTA -->
-    <section class="cta-band">
-        <div class="cta-band-inner">
-
-            <h2 class="cta-title">
-                Ready to Grow With Us?
-            </h2>
-
-            <p class="cta-desc">
-                Bergabung bersama ribuan mahasiswa dan alumni untuk membangun
-                masa depan karir yang lebih kuat.
-            </p>
-
-            <div class="cta-btns">
-                @auth
-                    <a href="{{ route('lowongan.pekerjaan') }}" class="btn-cta-dark" style="text-decoration:none;">
-                        Cari Lowongan
-                    </a>
-                @else
-                    <a href="{{ route('register') }}" class="btn-cta-dark" style="text-decoration:none;">
-                        Join Now
-                    </a>
-                @endauth
-
-                <a href="mailto:info@sumatracareer.com" class="btn-cta-out" style="text-decoration:none;">
-                    Contact Team
-                </a>
             </div>
         </div>
     </section>
+
+
+    <!-- TESTIMONIAL SECTION -->
+    <section
+        class="section"
+        style="background:#f8fbfc;"
+    >
+        <div class="section-inner">
+
+            <div class="section-header">
+                <div>
+                    <div class="section-eyebrow">
+                        Testimonials
+                    </div>
+
+                    <h2 class="section-title">
+                        Apa Kata Mereka
+                    </h2>
+
+                    <p class="section-sub">
+                        Dengarkan pengalaman mahasiswa, alumni, dan mitra perusahaan
+                        yang telah berkembang bersama Sumatra Career Centre.
+                    </p>
+                </div>
+            </div>
+
+            <div
+                style="display:grid; grid-template-columns:repeat(3,1fr); gap:28px;"
+            >
+
+                <div class="job-card">
+                    <p class="section-sub" style="font-style:italic; margin-bottom:20px;">
+                        "SCC membantu saya mendapatkan pekerjaan bahkan sebelum wisuda.
+                        Sistemnya sangat membantu dan profesional."
+                    </p>
+
+                    <h3 class="job-title">
+                        Adinda Pertiwi
+                    </h3>
+
+                    <p class="job-company">
+                        Alumni Universitas Andalas
+                    </p>
+                </div>
+
+                <div class="job-card">
+                    <p class="section-sub" style="font-style:italic; margin-bottom:20px;">
+                        "Kami menemukan banyak kandidat berkualitas melalui platform ini.
+                        Sangat efektif untuk proses rekrutmen."
+                    </p>
+
+                    <h3 class="job-title">
+                        Budi Santoso
+                    </h3>
+
+                    <p class="job-company">
+                        HR Manager - Tech Company
+                    </p>
+                </div>
+
+                <div class="job-card">
+                    <p class="section-sub" style="font-style:italic; margin-bottom:20px;">
+                        "Proses melamar jadi jauh lebih mudah dan transparan.
+                        Saya bisa pantau status lamaran kapan saja."
+                    </p>
+
+                    <h3 class="job-title">
+                        Rina Wulandari
+                    </h3>
+
+                    <p class="job-company">
+                        Alumni Universitas Riau
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ═══ CTA ═══ -->
+    <div class="cta-band">
+        <div class="cta-band-inner reveal">
+
+            <h2 class="cta-title">
+                @if ($isPerusahaan)
+                    Siap Menemukan Talenta Terbaik?
+                @else
+                    Siap Memulai Perjalanan Kariermu?
+                @endif
+            </h2>
+
+            <p class="cta-desc">
+                @if ($isPerusahaan)
+                    Pasang lowongan Anda dan jangkau ribuan talenta siap kerja dari
+                    mahasiswa dan alumni Politeknik Caltex Riau melalui Sumatra Career Centre.
+                @else
+                    Bergabunglah dengan lebih dari 150,000 alumni yang telah menemukan karier
+                    impian mereka melalui Sumatra Career Centre.
+                @endif
+            </p>
+
+            <div class="cta-btns">
+
+                @if ($isPerusahaan)
+                    <a href="{{ route('admin.dashboard') }}" class="btn-cta-dark"
+                        style="display:inline-flex; align-items:center; gap:8px; text-decoration:none;">
+                        Pasang Lowongan Sekarang
+                    </a>
+
+                    <a href="{{ route('career.index') }}" class="btn-cta-out"
+                        style="display:inline-flex; align-items:center; gap:8px; text-decoration:none;">
+                        Cari Talenta
+                    </a>
+                @else
+                    @guest
+                        <a href="{{ route('register') }}" class="btn-cta-dark"
+                            style="display:inline-flex; align-items:center; gap:8px; text-decoration:none;">
+                            Daftar Sekarang — Gratis
+                        </a>
+                    @endguest
+
+                    <a href="{{ route('lowongan.pekerjaan') }}" class="btn-cta-out"
+                        style="display:inline-flex; align-items:center; gap:8px; text-decoration:none;">
+                        Lihat Semua Lowongan
+                    </a>
+                @endif
+
+            </div>
+        </div>
+    </div>
 
 
     <!-- FOOTER -->

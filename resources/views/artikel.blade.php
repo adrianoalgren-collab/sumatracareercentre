@@ -5,10 +5,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Artikel | Sumatra Career Centre</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet"/>
+   <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,600;1,700&display=swap" rel="stylesheet"/>
+    @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/artikel.js', 'resources/css/artikel.css'])
 
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800;900&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
-
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <link rel="stylesheet" href="{{ asset('css/artikel.css') }}">
 </head>
 
 <body>
@@ -16,95 +17,35 @@
     <!-- Navbar -->
     <x-navbar />
 
-    <!-- HERO -->
-    <section class="hero">
-        <div class="hero-bg"></div>
-
-        <img class="hero-img"
-            src="https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=2000&auto=format&fit=crop"
-            alt="Artikel Career" />
-
-        <div class="hero-geo hero-geo-ring"></div>
-        <div class="hero-geo hero-geo-ring-inner"></div>
-        <div class="hero-geo hero-geo-line"></div>
-
-        <div class="hero-content">
-            <div>
-                <div class="hero-label">
-                    <span class="hero-label-bar"></span>
-                    Berita & Wawasan Karier
-                </div>
-
-                <h1 class="hero-title">
-                    Artikel & Insight <br>
-                    Untuk Masa Depan <br>
-                    <em>Karirmu</em>
-                </h1>
-
-                <p class="hero-desc">
-                    Temukan tren industri terbaru, tips pengembangan diri,
-                    seminar karier, workshop, hingga peluang eksklusif untuk
-                    mempercepat perjalanan profesionalmu.
-                </p>
-            </div>
-
-            <div class="hero-card">
-                <div class="hero-card-label">Kategori Populer</div>
-
-                <ul class="hero-card-list">
-                    <li class="hero-card-item">
-                        <div>
-                            <span class="hero-card-role">Seminar Karier</span>
-                            <span class="hero-card-co">Tips interview & networking</span>
-                        </div>
-                    </li>
-
-                    <li class="hero-card-item">
-                        <div>
-                            <span class="hero-card-role">Campus Hiring</span>
-                            <span class="hero-card-co">Peluang rekrutmen kampus</span>
-                        </div>
-                    </li>
-
-                    <li class="hero-card-item">
-                        <div>
-                            <span class="hero-card-role">Workshop</span>
-                            <span class="hero-card-co">Skill upgrade & personal branding</span>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </section>
-
     <!-- FEATURED ARTICLE -->
     @if($featured)
-    <section class="section news-section">
+    <section class="section news-section news-section-hero">
         <div class="section-inner">
 
             <div class="section-header">
                 <div>
                     <div class="section-eyebrow">Artikel Unggulan</div>
-                    <h2 class="section-title">{{ $featured->judul }}</h2>
-                    <p class="section-sub">
-                        {{ $featured->ringkasan }}
-                    </p>
+                    <h2 class="section-title">Berita & Insight Karier</h2>
                 </div>
             </div>
 
             <div class="news-grid">
-                <a href="{{ route('artikel.detail', $featured->slug) }}" style="text-decoration:none; color:inherit;">
-                <div class="news-card">
+
+                <!-- Featured -->
+                <a href="{{ route('artikel.detail', $featured->slug) }}" class="news-card" style="text-decoration:none; color:inherit;">
+
                     <div class="news-card-img">
-                        <img src="{{ $featured->gambar_utama ? asset('storage/'.$featured->gambar_utama) : 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=2000&auto=format&fit=crop' }}" alt="featured">
+                        <img src="{{ $featured->gambar_utama ? asset('storage/'.$featured->gambar_utama) : 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=2000&auto=format&fit=crop' }}"
+                             alt="{{ $featured->judul }}" />
                         <div class="news-card-img-overlay"></div>
                     </div>
 
                     <div class="news-card-body">
+
                         <div class="news-meta">
                             <span class="news-cat">{{ $featured->kategori }}</span>
                             <span class="news-dot"></span>
-                            <span class="news-read">{{ $featured->tanggal_label }}</span>
+                            <span class="news-read">{{ $featured->waktu_baca_label }}</span>
                         </div>
 
                         <h3 class="news-title">
@@ -115,25 +56,79 @@
                             {{ $featured->ringkasan }}
                         </p>
 
-                        <span class="news-link">Baca Selengkapnya →</span>
+                        <span class="news-link">
+                            Baca Selengkapnya
+                            <span class="material-icons-round" style="font-size:14px;">open_in_new</span>
+                        </span>
+
                     </div>
-                </div>
                 </a>
 
+                <!-- Side stack -->
                 <div class="news-side">
-                    @forelse($sideArticles as $item)
-                    <a href="{{ route('artikel.detail', $item->slug) }}" style="text-decoration:none; color:inherit;">
-                    <div class="news-card news-card-sm">
+
+                    @foreach($sideArticles->take(1) as $item)
+                    <a href="{{ route('artikel.detail', $item->slug) }}" class="news-card news-card-sm" style="text-decoration:none; color:inherit;">
+
+                        
+
                         <div class="news-card-body">
-                            <h4 class="news-title">{{ $item->judul }}</h4>
-                            <p class="news-desc">{{ $item->ringkasan }}</p>
+
+                            <div class="news-meta">
+                                <span class="news-cat">{{ $item->kategori }}</span>
+                                <span class="news-dot"></span>
+                                <span class="news-read">{{ $item->waktu_baca_label }}</span>
+                            </div>
+
+                            <h3 class="news-title">
+                                {{ $item->judul }}
+                            </h3>
+
+                            <p class="news-desc">
+                                {{ $item->ringkasan }}
+                            </p>
+
+                            <span class="news-link">
+                                Baca Artikel
+                                <span class="material-icons-round" style="font-size:12px;">open_in_new</span>
+                            </span>
+
                         </div>
-                    </div>
                     </a>
-                    @empty
-                    {{-- Tidak ada artikel tambahan --}}
-                    @endforelse
+                    @endforeach
+
+                    <!-- Newsletter (statis, bukan artikel) -->
+                    <div class="news-card news-card-sm" style="background:rgba(238,21,42,0.07); border-color:rgba(238,21,42,0.18);">
+
+                        <div class="news-card-body" style="padding:28px; display:flex; flex-direction:column; justify-content:center; gap:10px;">
+
+                            <div class="news-meta">
+                                <span class="news-cat" style="color:var(--amber);">Newsletter</span>
+                            </div>
+
+                            <h3 class="news-title">Dapatkan Update Karier Terbaru</h3>
+
+                            <p class="news-desc" style="margin-bottom:16px;">
+                                Berlangganan sekarang dan jangan lewatkan informasi lowongan, insight industri, dan peluang eksklusif lainnya.
+                            </p>
+
+                            <div style="display:flex; gap:8px;">
+                                <input type="email" placeholder="Masukkan email kamu..."
+                                    style="flex:1; padding:10px 14px; border-radius:4px; border:1px solid rgba(77,184,212,0.3);
+                                    background:rgba(255,255,255,0.06); color:var(--cream);
+                                    font-family:'DM Sans',sans-serif; font-size:0.875rem; outline:none;" />
+
+                                <button class="btn-apply" style="width:auto; padding:10px 20px; border-radius:4px; white-space:nowrap; font-size:0.8125rem;">
+                                    Subscribe
+                                </button>
+                            </div>
+
+                        </div>
+
+                    </div>
+
                 </div>
+
             </div>
 
         </div>
@@ -177,7 +172,8 @@
                 @foreach($artikel as $item)
                 <div class="job-card">
                     <div class="job-card-image">
-                        <img src="{{ $item->gambar_utama ? asset('storage/'.$item->gambar_utama) : 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=1200&auto=format&fit=crop' }}" alt="{{ $item->judul }}">
+                        <img src="{{ $item->gambar_utama ? asset('storage/'.$item->gambar_utama) : 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=1200&auto=format&fit=crop' }}"
+                             alt="{{ $item->judul }}">
                     </div>
 
                     <div class="job-card-content">
@@ -211,93 +207,83 @@
 
             <!-- PAGINATION -->
             @if($artikel->hasPages())
-            <div class="article-pagination">
+            <div style="margin-top:48px; display:flex; justify-content:center; align-items:center; gap:8px; flex-wrap:wrap;">
 
-                @if(!$artikel->onFirstPage())
-                    <a href="{{ $artikel->previousPageUrl() }}" class="page-btn">←</a>
+                {{-- Tombol Previous --}}
+                @if($artikel->onFirstPage())
+                    <span style="padding:10px 16px; border-radius:8px; border:1px solid rgba(0,75,95,0.12); color:var(--smoke); font-family:'DM Sans', sans-serif; font-size:0.85rem; opacity:0.5;">
+                        &laquo; Sebelumnya
+                    </span>
+                @else
+                    <a href="{{ $artikel->previousPageUrl() }}"
+                       style="padding:10px 16px; border-radius:8px; border:1px solid rgba(0,75,95,0.12); color:var(--charcoal); text-decoration:none; font-family:'DM Sans', sans-serif; font-size:0.85rem; transition:background .15s;">
+                        &laquo; Sebelumnya
+                    </a>
                 @endif
 
+                {{-- Nomor Halaman --}}
                 @foreach($artikel->getUrlRange(1, $artikel->lastPage()) as $page => $url)
-                    <a href="{{ $url }}" class="page-btn {{ $page == $artikel->currentPage() ? 'active' : '' }}">
-                        {{ $page }}
-                    </a>
+                    @if($page == $artikel->currentPage())
+                        <span style="padding:10px 16px; border-radius:8px; background:var(--forest, #004b5f); color:#fff; font-family:'DM Sans', sans-serif; font-size:0.85rem; font-weight:600;">
+                            {{ $page }}
+                        </span>
+                    @else
+                        <a href="{{ $url }}"
+                           style="padding:10px 16px; border-radius:8px; border:1px solid rgba(0,75,95,0.12); color:var(--charcoal); text-decoration:none; font-family:'DM Sans', sans-serif; font-size:0.85rem;">
+                            {{ $page }}
+                        </a>
+                    @endif
                 @endforeach
 
+                {{-- Tombol Next --}}
                 @if($artikel->hasMorePages())
-                    <a href="{{ $artikel->nextPageUrl() }}" class="page-btn">→</a>
+                    <a href="{{ $artikel->nextPageUrl() }}"
+                       style="padding:10px 16px; border-radius:8px; border:1px solid rgba(0,75,95,0.12); color:var(--charcoal); text-decoration:none; font-family:'DM Sans', sans-serif; font-size:0.85rem;">
+                        Selanjutnya &raquo;
+                    </a>
+                @else
+                    <span style="padding:10px 16px; border-radius:8px; border:1px solid rgba(0,75,95,0.12); color:var(--smoke); font-family:'DM Sans', sans-serif; font-size:0.85rem; opacity:0.5;">
+                        Selanjutnya &raquo;
+                    </span>
                 @endif
 
             </div>
-            @endif
-            @endif
 
-        </div>
-    </section>
-
-    <!-- CTA -->
-    <section class="cta-band">
-        <div class="cta-band-inner">
-            <h2 class="cta-title">Dapatkan Update Mingguan</h2>
-            <p class="cta-desc">
-                Jadilah yang pertama tahu tentang lowongan eksklusif,
-                event kampus, dan tips karier terbaru langsung di inbox Anda.
+            <p style="text-align:center; margin-top:16px; color:var(--smoke); font-family:'DM Sans', sans-serif; font-size:0.8rem;">
+                Menampilkan {{ $artikel->firstItem() }}–{{ $artikel->lastItem() }} dari {{ $artikel->total() }} artikel
             </p>
+            @endif
+            @endif
 
-            <div class="cta-btns">
-                <button class="btn-cta-dark">Berlangganan</button>
-                <a href="{{ route('artikel') }}" class="btn-cta-out" style="text-decoration:none; display:inline-flex; align-items:center;">Lihat Semua Artikel</a>
-            </div>
         </div>
     </section>
+
+    <!-- ═══ CTA ═══ -->
+    <div class="cta-band">
+    <div class="cta-band-inner reveal">
+        <h2 class="cta-title">Siap Memulai Perjalanan Kariermu?</h2>
+        <p class="cta-desc">Bergabunglah dengan lebih dari 150,000 alumni yang telah menemukan karier impian mereka melalui Sumatra Career Centre.</p>
+        <div class="cta-btns">
+
+        @guest
+            <a href="{{ route('register') }}" class="btn-cta-dark"
+                style="display:inline-flex; align-items:center; gap:8px; text-decoration:none;">
+                Daftar Sekarang — Gratis
+            </a>
+        @endguest
+
+        <a href="{{ route('lowongan.pekerjaan') }}" class="btn-cta-out"
+            style="display:inline-flex; align-items:center; gap:8px; text-decoration:none;">
+            Lihat Semua Lowongan
+        </a>
+        </div>
+    </div>
+    </div>
 
     <!-- Footer -->
     <x-footer />
 
-    <script>
-    function setTab(el) {
-        document.querySelectorAll('.role-tab').forEach(tab => {
-            tab.classList.remove('active');
-        });
-
-        el.classList.add('active');
-    }
-
-    document.addEventListener("DOMContentLoaded", function () {
-        const animatedItems = [
-            ".hero-label",
-            ".hero-title",
-            ".hero-desc",
-            ".hero-card",
-
-            ".section-header",
-            ".news-card",
-            ".news-card-sm",
-
-            ".article-search-wrapper",
-            ".job-card:nth-child(1)",
-            ".job-card:nth-child(2)",
-            ".job-card:nth-child(3)",
-
-            ".article-pagination",
-            ".cta-band-inner"
-        ];
-
-        animatedItems.forEach((selector, index) => {
-            const elements = document.querySelectorAll(selector);
-
-            elements.forEach((el) => {
-                el.style.opacity = "0";
-                el.style.transform = "translateY(40px)";
-                el.style.transition = "all 0.8s ease";
-
-                setTimeout(() => {
-                    el.style.opacity = "1";
-                    el.style.transform = "translateY(0)";
-                }, 200 + (index * 180));
-            });
-        });
-    });
-</script>
+    <script src="{{ asset('js/artikel.js') }}"></script>
 
 </body>
 

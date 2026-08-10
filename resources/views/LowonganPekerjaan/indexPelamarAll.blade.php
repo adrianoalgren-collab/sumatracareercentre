@@ -55,12 +55,43 @@
                 </span>
             </div>
 
-            <div class="lowongan-info-item" style="flex:0 0 auto; margin-left:auto; margin-right:0; padding-right:0;">
-                <button type="button" class="btn-primary" id="btnSetJadwalInterview" style="white-space:nowrap;">
-                    <i class="fas fa-calendar-check"></i>
-                    Set Jadwal Interview
-                </button>
-            </div>
+           @php
+            // Tombol terkunci kalau salah satu dari ini masih true:
+            // 1. Lowongan masih 'aktif' (belum ditutup)
+            // 2. Belum ada satupun pelamar yang berstatus 'interview'
+            // 3. Masih ada pelamar yang berstatus 'pending' (belum diproses semua)
+            $lowonganMasihAktif = $lowongan->status_lowongan === 'aktif';
+            $belumAdaInterview  = ($ringkasan['interview'] ?? 0) === 0;
+            $masihAdaPending    = ($ringkasan['pending'] ?? 0) > 0;
+
+            $tombolTerkunci = $lowonganMasihAktif || $belumAdaInterview || $masihAdaPending;
+
+            // Pesan alasan terkunci (untuk tooltip)
+            $alasanTerkunci = [];
+            if ($lowonganMasihAktif) {
+                $alasanTerkunci[] = 'Lowongan masih berstatus aktif';
+            }
+            if ($belumAdaInterview) {
+                $alasanTerkunci[] = 'Belum ada pelamar berstatus Interview';
+            }
+            if ($masihAdaPending) {
+                $alasanTerkunci[] = 'Masih ada pelamar berstatus Pending';
+            }
+        @endphp
+
+        <div class="lowongan-info-item" style="flex:0 0 auto; margin-left:auto; margin-right:0; padding-right:0;">
+            <button type="button"
+                    class="btn-primary"
+                    id="btnSetJadwalInterview"
+                    style="white-space:nowrap;"
+                    @if($tombolTerkunci)
+                        disabled
+                        title="{{ implode('. ', $alasanTerkunci) }}"
+                    @endif>
+                <i class="fas {{ $tombolTerkunci ? 'fa-lock' : 'fa-calendar-check' }}"></i>
+                Set Jadwal Interview
+            </button>
+        </div>
         </div>
 
         <!-- RINGKASAN -->

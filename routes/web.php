@@ -13,6 +13,12 @@ use App\Http\Controllers\PerusahaanController;
 use App\Http\Controllers\PelamarController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\LamaranController;
+use App\Http\Controllers\CareerDevelopmentController;
+use App\Http\Controllers\CareerLessonController;
+use App\Http\Controllers\CareerEnrollmentController;
+use App\Http\Controllers\JadwalInterviewController;
+use App\Http\Controllers\DashboardController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -39,6 +45,18 @@ Route::get('/artikel', [ArtikelController::class, 'index'])
 /* ARTIKEL: DETAIL */
 Route::get('/artikel/{slug}', [ArtikelController::class, 'show'])
     ->name('artikel.detail');
+
+/*
+|--------------------------------------------------------------------------
+| CAREER DEVELOPMENT: LISTING & DETAIL (bisa dilihat tanpa login)
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/career-development', [CareerDevelopmentController::class, 'index'])
+    ->name('career.index');
+
+Route::get('/career-development/{id}', [CareerDevelopmentController::class, 'show'])
+    ->name('career.show');
 
 
 /*
@@ -93,6 +111,15 @@ Route::middleware('auth')->group(function () {
 
     /*
     |----------------------------------------------------------------------
+    | CAREER DEVELOPMENT (USER) — wajib login untuk mendaftar & progres
+    |----------------------------------------------------------------------
+    */
+
+    Route::post('/career-development/{id}/enroll', [CareerDevelopmentController::class, 'enroll'])
+        ->name('career.enroll');
+
+    /*
+    |----------------------------------------------------------------------
     | PROFIL SAYA
     |----------------------------------------------------------------------
     */
@@ -133,6 +160,12 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profil/skills', [ProfileController::class, 'removeSkill'])
         ->name('skills.remove');
 
+    Route::get('/career-development/{classId}/lesson/{lessonId}', [CareerDevelopmentController::class, 'lessonShow'])
+        ->name('career.lesson.show');
+
+    Route::post('/career-development/{classId}/lesson/{lessonId}/complete', [CareerDevelopmentController::class, 'lessonComplete'])
+        ->name('career.lesson.complete');
+
 });
 
 
@@ -142,13 +175,7 @@ Route::middleware('auth')->group(function () {
 |--------------------------------------------------------------------------
 */
 
-Route::middleware(['auth', 'role:admin'])->group(function () {
-
-    /* DASHBOARD */
-    Route::get('/admin/dashboard', [LowonganPekerjaanController::class, 'adminIndex'])
-        ->name('admin.dashboard');
-
-
+Route::middleware(['auth', 'role:admin,perusahaan'])->group(function () {
     /*
     |----------------------------------------------------------------------
     | DATA LOWONGAN
@@ -180,6 +207,28 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     Route::patch('/admin/lowongan/{id}/toggle-status', [LowonganPekerjaanController::class, 'toggleStatus'])
         ->name('admin.lowongan.toggleStatus');
+
+    /*
+    |----------------------------------------------------------------------
+    | MODERASI LOWONGAN (approval)
+    |----------------------------------------------------------------------
+    */
+
+    /* LISTING LOWONGAN YANG MENUNGGU APPROVAL */
+    Route::get('/admin/lowongan/pending', [LowonganPekerjaanController::class, 'pendingApproval'])
+        ->name('admin.lowongan.pending');
+
+    /* HALAMAN REVIEW SATU LOWONGAN */
+    Route::get('/admin/lowongan/{id}/review', [LowonganPekerjaanController::class, 'review'])
+        ->name('admin.lowongan.review');
+
+    /* SETUJUI LOWONGAN */
+    Route::patch('/admin/lowongan/{id}/approve', [LowonganPekerjaanController::class, 'approve'])
+        ->name('admin.lowongan.approve');
+
+    /* TOLAK LOWONGAN */
+    Route::patch('/admin/lowongan/{id}/reject', [LowonganPekerjaanController::class, 'reject'])
+        ->name('admin.lowongan.reject');
 
     /*
     |----------------------------------------------------------------------
@@ -299,5 +348,150 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     /* DELETE */
     Route::delete('/admin/artikel/delete/{id}', [ArtikelController::class, 'destroy'])
         ->name('admin.artikel.delete');
+
+    /*
+    |----------------------------------------------------------------------
+    | MODERASI KOMENTAR
+    |----------------------------------------------------------------------
+    */
+
+    /* LISTING SEMUA KOMENTAR YANG PERLU DIREVIEW */
+    Route::get('/admin/komentar', [KomentarController::class, 'adminIndex'])
+        ->name('admin.komentar.index');
+
+    /* HALAMAN REVIEW SATU KOMENTAR */
+    Route::get('/admin/komentar/{id}/review', [KomentarController::class, 'review'])
+        ->name('admin.komentar.review');
+
+    /* HAPUS KOMENTAR DARI HALAMAN MODERASI */
+    Route::delete('/admin/komentar/{id}/hapus', [KomentarController::class, 'adminDestroy'])
+        ->name('admin.komentar.destroy');
+
+    /*
+    |----------------------------------------------------------------------
+    | CAREER DEVELOPMENT (ADMIN) — kelola kelas, lesson & peserta
+    | Semua halaman terpisah (tidak ada tab / modal gabungan)
+    |----------------------------------------------------------------------
+    */
+
+    Route::prefix('admin/career-development')->name('admin.career.')->group(function () {
+
+        /* LISTING KELAS */
+        Route::get('/', [CareerDevelopmentController::class, 'adminIndex'])
+            ->name('index');
+
+        /* HALAMAN TAMBAH KELAS */
+        Route::get('/tambah', [CareerDevelopmentController::class, 'create'])
+            ->name('tambah');
+
+        /* CREATE KELAS */
+        Route::post('/store', [CareerDevelopmentController::class, 'store'])
+            ->name('store');
+
+        /* EDIT KELAS */
+        Route::get('/edit/{id}', [CareerDevelopmentController::class, 'edit'])
+            ->name('edit');
+
+        /* UPDATE KELAS */
+        Route::put('/update/{id}', [CareerDevelopmentController::class, 'update'])
+            ->name('update');
+
+        /* DELETE KELAS */
+        Route::delete('/delete/{id}', [CareerDevelopmentController::class, 'destroy'])
+            ->name('delete');
+
+        /*
+        |------------------------------------------------------------------
+        | LESSON (halaman terpisah, per kelas)
+        |------------------------------------------------------------------
+        */
+
+        Route::prefix('{classId}/lesson')->name('lesson.')->group(function () {
+
+            /* HALAMAN KELOLA LESSON */
+            Route::get('/', [CareerLessonController::class, 'index'])
+                ->name('index');
+
+            /* HALAMAN TAMBAH LESSON */
+            Route::get('/tambah', [CareerLessonController::class, 'create'])
+                ->name('create');
+
+            /* CREATE LESSON */
+            Route::post('/store', [CareerLessonController::class, 'store'])
+                ->name('store');
+
+            /* HALAMAN EDIT LESSON */
+            Route::get('/{lessonId}/edit', [CareerLessonController::class, 'edit'])
+                ->name('edit');
+
+            /* UPDATE LESSON */
+            Route::put('/{lessonId}/update', [CareerLessonController::class, 'update'])
+                ->name('update');
+
+            /* DELETE LESSON */
+            Route::delete('/{lessonId}/delete', [CareerLessonController::class, 'destroy'])
+                ->name('delete');
+
+            /* UBAH URUTAN LESSON (drag & drop) */
+            Route::patch('/reorder', [CareerLessonController::class, 'reorder'])
+                ->name('reorder');
+
+        });
+
+        /*
+        |------------------------------------------------------------------
+        | ENROLLMENT / PESERTA (halaman terpisah, per kelas)
+        |------------------------------------------------------------------
+        */
+
+        Route::prefix('{classId}/enrollment')->name('enrollment.')->group(function () {
+
+            /* HALAMAN KELOLA PESERTA */
+            Route::get('/', [CareerEnrollmentController::class, 'index'])
+                ->name('index');
+
+            /* HALAMAN TAMBAH PESERTA */
+            Route::get('/tambah', [CareerEnrollmentController::class, 'create'])
+                ->name('create');
+
+            /* DAFTARKAN USER SECARA MANUAL OLEH ADMIN */
+            Route::post('/store', [CareerEnrollmentController::class, 'store'])
+                ->name('store');
+
+            /* HALAMAN EDIT STATUS ENROLLMENT */
+            Route::get('/{enrollmentId}/edit', [CareerEnrollmentController::class, 'edit'])
+                ->name('edit');
+
+            /* UBAH STATUS ENROLLMENT (mis. aktif -> selesai, atau non-aktifkan) */
+            Route::patch('/{enrollmentId}/update', [CareerEnrollmentController::class, 'update'])
+                ->name('update');
+
+            /* HAPUS ENROLLMENT / KELUARKAN PESERTA */
+            Route::delete('/{enrollmentId}/delete', [CareerEnrollmentController::class, 'destroy'])
+                ->name('destroy');
+
+        });
+
+    });
+
+    Route::get('/admin/jadwal-interview', [JadwalInterviewController::class, 'index'])
+    ->name('admin.jadwalinterview.index');
+
+    Route::get('/admin/jadwal-interview/{lamaran}/edit', [JadwalInterviewController::class, 'edit'])
+        ->name('admin.jadwalinterview.edit');
+
+    Route::put('/admin/jadwal-interview/{lamaran}/update', [JadwalInterviewController::class, 'update'])
+        ->name('admin.jadwalinterview.update');
+
+    Route::delete('/admin/jadwal-interview/{lamaran}/cancel', [JadwalInterviewController::class, 'cancel'])
+        ->name('admin.jadwalinterview.cancel');
+
+    /* DASHBOARD */
+    Route::get('/admin/dashboard', [DashboardController::class, 'index'])
+        ->name('admin.dashboard');
+
+    /* DASHBOARD PERUSAHAAN */
+    Route::get('/perusahaan/dashboard', [DashboardController::class, 'perusahaan'])
+        ->name('perusahaan.dashboard');
 
 });

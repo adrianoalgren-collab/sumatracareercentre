@@ -8,6 +8,8 @@ class AboutUsController extends Controller
 {
     public function index()
     {
-        return view('aboutUs');
+        $isPerusahaan = auth()->check() && auth()->user()->role === 'perusahaan';
+
+        return view('aboutUs', compact('isPerusahaan'));
     }
 }

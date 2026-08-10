@@ -1,0 +1,764 @@
+/* ==========================================================
+   career-development.css
+   Page-scoped styles untuk halaman Learning Path (detail kelas)
+   ========================================================== */
+
+:root {
+    /* Sesuaikan angka ini dengan tinggi navbar asli (cek di devtools, elemen <nav>) */
+    --navbar-height: 88px;
+}
+
+/* Light strip that continues the navbar's own background rather than
+   slamming into a full-bleed dark band — keeps it a page header,
+   not a disguised hero. */
+.path-header {
+    background: var(--cream, #FDF8F3);
+    border-bottom: 1px solid rgba(74,44,29,0.08);
+    padding: 28px 0 32px;
+    margin-top: var(--navbar-height);
+    position: relative;
+}
+
+.path-header-inner {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 0 24px;
+    position: relative;
+}
+
+.path-crumb {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--smoke, #8A7B6C);
+    margin-bottom: 12px;
+}
+
+.path-crumb a {
+    color: var(--smoke, #8A7B6C);
+    text-decoration: none;
+}
+
+.path-crumb a:hover { color: var(--jade, #B8860B); }
+
+.path-header h1 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: clamp(1.7rem, 2.8vw, 2.3rem);
+    color: var(--forest, #4A2C1D);
+    line-height: 1.2;
+    max-width: 720px;
+    margin-bottom: 8px;
+}
+
+.path-header p {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    color: var(--smoke, #8A7B6C);
+    max-width: 620px;
+    line-height: 1.6;
+}
+
+.path-body {
+    max-width: 1120px;
+    margin: 0 auto 80px;
+    padding: 40px 24px 0;
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 32px;
+    align-items: start;
+    position: relative;
+}
+
+/* ---- Sticky syllabus card ---- */
+
+.syllabus-card {
+    background: var(--white, #fff);
+    border: 1px solid rgba(74,44,29,0.08);
+    border-radius: 18px;
+    padding: 28px;
+    box-shadow: 0 18px 40px -20px rgba(45,35,32,0.25);
+    position: sticky;
+    top: calc(var(--navbar-height) + 24px);
+    z-index: 1;
+}
+
+.syllabus-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--jade, #B8860B);
+    margin-bottom: 10px;
+}
+
+.progress-ring-wrap {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.progress-ring-wrap svg { flex-shrink: 0; }
+
+.progress-ring-label {
+    font-family: 'DM Mono', monospace;
+}
+
+.progress-ring-num {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--forest, #4A2C1D);
+    display: block;
+    line-height: 1;
+}
+
+.progress-ring-sub {
+    font-size: 0.75rem;
+    color: var(--smoke, #8A7B6C);
+    margin-top: 4px;
+    display: block;
+}
+
+.syllabus-desc {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    line-height: 1.65;
+    color: var(--smoke, #8A7B6C);
+    margin-bottom: 22px;
+    padding-bottom: 22px;
+    border-bottom: 1px solid rgba(74,44,29,0.08);
+}
+
+.syllabus-stats {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 22px;
+}
+
+.syllabus-stat-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--forest, #4A2C1D);
+    display: block;
+}
+
+.syllabus-stat-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.72rem;
+    color: var(--smoke, #8A7B6C);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.btn-enroll {
+    width: 100%;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--amber, #D2691E);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 14px 20px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 0.92rem;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.btn-enroll:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 24px -8px rgba(210,105,30,0.55);
+}
+
+/* ---- Learning path (signature element) ---- */
+
+.path-rail-col {
+    position: relative;
+    padding-left: 8px;
+}
+
+.path-section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--smoke, #8A7B6C);
+    margin-bottom: 22px;
+    padding-left: 62px;
+}
+
+.rail {
+    position: relative;
+}
+
+.rail-track {
+    position: absolute;
+    left: 27px;
+    top: 8px;
+    bottom: 8px;
+    width: 2px;
+    background: rgba(74,44,29,0.1);
+}
+
+.rail-track-fill {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    background: var(--jade, #B8860B);
+    border-radius: 2px;
+}
+
+.lesson-node {
+    position: relative;
+    display: flex;
+    gap: 20px;
+    padding: 0 0 26px 0;
+}
+
+.lesson-node:last-child { padding-bottom: 0; }
+
+.node-marker {
+    width: 56px;
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+}
+
+.node-dot {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'DM Mono', monospace;
+    font-weight: 600;
+    font-size: 0.8rem;
+    border: 2px solid var(--white, #fff);
+    box-shadow: 0 0 0 2px rgba(74,44,29,0.1);
+}
+
+.node-dot.is-done {
+    background: var(--jade, #B8860B);
+    color: #fff;
+    box-shadow: 0 0 0 2px rgba(184,134,11,0.25);
+}
+
+.node-dot.is-active {
+    background: var(--white, #fff);
+    color: var(--jade, #B8860B);
+    border-color: var(--jade, #B8860B);
+}
+
+.node-dot.is-locked {
+    background: rgba(74,44,29,0.05);
+    color: var(--smoke, #8A7B6C);
+}
+
+.node-card {
+    flex: 1;
+    background: var(--white, #fff);
+    border: 1px solid rgba(74,44,29,0.08);
+    border-radius: 14px;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.lesson-node.is-locked .node-card { opacity: 0.6; }
+
+.lesson-node:not(.is-locked) .node-card:hover {
+    border-color: rgba(184,134,11,0.35);
+    box-shadow: 0 10px 28px -18px rgba(45,35,32,0.4);
+}
+
+.node-info { flex: 1; min-width: 0; }
+
+.node-title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 600;
+    font-size: 1.02rem;
+    color: var(--forest, #4A2C1D);
+    margin-bottom: 5px;
+}
+
+.node-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.78rem;
+    color: var(--smoke, #8A7B6C);
+}
+
+.node-meta-type {
+    font-family: 'DM Mono', monospace;
+    color: var(--jade, #B8860B);
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    letter-spacing: 0.03em;
+}
+
+.node-action {
+    flex-shrink: 0;
+    text-decoration: none;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 0.82rem;
+    padding: 9px 18px;
+    border-radius: 8px;
+    white-space: nowrap;
+}
+
+.node-action.primary {
+    background: var(--forest, #4A2C1D);
+    color: var(--cream, #FDF8F3);
+}
+
+.node-action.done {
+    background: rgba(184,134,11,0.1);
+    color: var(--jade, #B8860B);
+}
+
+.node-action.locked {
+    background: rgba(74,44,29,0.05);
+    color: var(--smoke, #8A7B6C);
+    cursor: not-allowed;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 48px 24px;
+    font-family: 'DM Sans', sans-serif;
+    color: var(--smoke, #8A7B6C);
+    background: var(--white, #fff);
+    border: 1px dashed rgba(74,44,29,0.18);
+    border-radius: 14px;
+}
+
+@media (max-width: 860px) {
+    .path-body {
+        grid-template-columns: 1fr;
+        padding-top: 28px;
+    }
+
+    .syllabus-card { position: static; }
+
+    .node-card {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .node-action { align-self: stretch; text-align: center; }
+}
+
+/* ---- Card progress bar (dipakai di listing kelas dengan enrollment) ---- */
+
+.card-progress {
+    margin-bottom: 16px;
+}
+
+.card-progress-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.75rem;
+    color: var(--smoke, #8A7B6C);
+}
+
+.card-progress-meta strong {
+    font-family: 'DM Mono', monospace;
+    font-weight: 600;
+    color: var(--forest, #4A2C1D);
+    font-size: 0.8rem;
+}
+
+.card-progress-track {
+    position: relative;
+    background: rgba(74,44,29,0.08);
+    border-radius: 100px;
+    height: 6px;
+    overflow: hidden;
+}
+
+.card-progress-fill {
+    position: relative;
+    height: 100%;
+    background: var(--jade, #B8860B);
+    border-radius: 100px;
+    transition: width 0.4s ease;
+}
+
+/* Aksen kecil di ujung fill, senada dengan glow pada progress ring */
+.card-progress-fill::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--jade, #B8860B);
+    box-shadow: 0 0 0 3px rgba(184,134,11,0.18);
+}
+
+/* Kelas selesai: fill jadi pigment-free, tetap jade tapi tanpa dot aktif */
+.card-progress.is-complete .card-progress-fill::after {
+    display: none;
+}
+
+.card-progress.is-complete .card-progress-meta strong {
+    color: var(--jade, #B8860B);
+}
+
+.career-card .job-title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 600;
+    font-size: 1.15rem;
+    color: var(--forest, #4A2C1D);
+    line-height: 1.35;
+    margin: 0 0 6px 0; /* override margin bawaan, jarak dirapatkan */
+
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.career-card .job-company {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    line-height: 1.6;
+    color: var(--smoke, #8A7B6C);
+    margin: 0 0 18px 0; /* override margin bawaan */
+
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-height: calc(0.88rem * 1.6 * 2); /* jaga tinggi konsisten meski deskripsi 1 baris */
+}
+
+.career-card:hover .job-title {
+    color: var(--jade, #B8860B);
+    transition: color 0.15s ease;
+}
+
+.rail-end {
+    margin-top: 4px;
+}
+
+.rail-end .node-marker {
+    /* biar dot finish nyambung pas di titik akhir garis track */
+}
+
+.rail-end-dot {
+    width: 30px;
+    height: 30px;
+    font-size: 0.85rem;
+    border-style: dashed;
+}
+
+.rail-end-dot.is-done {
+    background: var(--jade, #B8860B);
+    color: #fff;
+    border-style: solid;
+    box-shadow: 0 0 0 2px rgba(184,134,11,0.25);
+}
+
+.rail-end-dot.is-locked {
+    background: rgba(74,44,29,0.05);
+    color: var(--smoke, #8A7B6C);
+    border-color: rgba(74,44,29,0.15);
+}
+
+.rail-end .node-card {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 6px 0 0;
+}
+
+.rail-end .node-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--smoke, #8A7B6C);
+    margin-bottom: 0;
+}
+
+.rail-end .node-title.is-complete-text {
+    color: var(--jade, #B8860B);
+}
+
+.lesson-body {
+    grid-template-columns: 300px 1fr;
+}
+
+.lesson-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.lesson-sidebar-progress {
+    padding-bottom: 18px;
+    border-bottom: 1px solid rgba(74,44,29,0.08);
+}
+
+.lesson-sidebar-progress-label {
+    display: block;
+    margin-top: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.75rem;
+    color: var(--smoke, #8A7B6C);
+}
+
+.lesson-sidebar-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    max-height: 50vh;
+    overflow-y: auto;
+}
+
+.lesson-sidebar-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 10px;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: background 0.15s ease;
+}
+
+.lesson-sidebar-item:not(.is-locked):hover {
+    background: rgba(184,134,11,0.06);
+}
+
+.lesson-sidebar-item.is-current {
+    background: rgba(74,44,29,0.06);
+}
+
+.lesson-sidebar-item.is-locked {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.lesson-sidebar-dot {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 600;
+    background: rgba(74,44,29,0.05);
+    color: var(--smoke, #8A7B6C);
+}
+
+.lesson-sidebar-item.is-current .lesson-sidebar-dot {
+    background: var(--white, #fff);
+    color: var(--jade, #B8860B);
+    border: 2px solid var(--jade, #B8860B);
+}
+
+.lesson-sidebar-dot.is-done {
+    background: var(--jade, #B8860B);
+    color: #fff;
+}
+
+.lesson-sidebar-title {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    color: var(--forest, #4A2C1D);
+    line-height: 1.3;
+}
+
+.lesson-sidebar-item.is-current .lesson-sidebar-title {
+    font-weight: 600;
+}
+
+.lesson-sidebar-back {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--jade, #B8860B);
+    text-decoration: none;
+    padding-top: 12px;
+    border-top: 1px solid rgba(74,44,29,0.08);
+}
+
+.lesson-sidebar-back:hover { color: var(--forest, #4A2C1D); }
+
+.lesson-content-col {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.lesson-content-card {
+    background: var(--white, #fff);
+    border: 1px solid rgba(74,44,29,0.08);
+    border-radius: 18px;
+    padding: 28px;
+    box-shadow: 0 18px 40px -20px rgba(45,35,32,0.25);
+}
+
+.lesson-content-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.78rem;
+    color: var(--smoke, #8A7B6C);
+    margin-bottom: 22px;
+    padding-bottom: 22px;
+    border-bottom: 1px solid rgba(74,44,29,0.08);
+}
+
+.lesson-status-badge {
+    margin-left: auto;
+    background: rgba(184,134,11,0.1);
+    color: var(--jade, #B8860B);
+    font-weight: 600;
+    font-size: 0.72rem;
+    padding: 5px 12px;
+    border-radius: 100px;
+}
+
+.lesson-video-wrap {
+    position: relative;
+    width: 100%;
+    padding-top: 56.25%;
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--forest, #4A2C1D);
+}
+
+.lesson-video-wrap iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+.lesson-doc-wrap {
+    width: 100%;
+    height: 70vh;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid rgba(74,44,29,0.1);
+    margin-bottom: 14px;
+}
+
+.lesson-doc-wrap iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+.lesson-doc-download {
+    display: inline-block;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--jade, #B8860B);
+    text-decoration: none;
+}
+
+.lesson-doc-download:hover { color: var(--forest, #4A2C1D); }
+
+.lesson-article {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    line-height: 1.75;
+    color: var(--forest, #4A2C1D);
+}
+
+.lesson-article h2, .lesson-article h3 {
+    font-family: 'Playfair Display', serif;
+    color: var(--forest, #4A2C1D);
+    margin: 24px 0 12px;
+}
+
+.lesson-article p { margin-bottom: 16px; }
+
+.lesson-article img {
+    max-width: 100%;
+    border-radius: 10px;
+    margin: 16px 0;
+}
+
+.lesson-actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.lesson-complete-btn {
+    width: auto;
+    display: inline-flex;
+    text-decoration: none;
+}
+
+@media (max-width: 860px) {
+    .lesson-body {
+        grid-template-columns: 1fr;
+    }
+
+    .lesson-sidebar-list {
+        max-height: none;
+    }
+
+    .lesson-actions {
+        justify-content: stretch;
+    }
+
+    .lesson-complete-btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+.lesson-video-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: var(--forest);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(74, 44, 29, 0.15);
+}
+
+.lesson-video-wrap video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    background: #000;
+    outline: none;
+}
+
+.lesson-video-wrap video::-webkit-media-controls-panel {
+    background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.55));
+}
