@@ -6,18 +6,15 @@ Official career website for Politeknik Caltex Riau — connecting students and a
 
 ## 📖 About the Project
 
-Sumatra Career Centre is a web-based platform built to support Politeknik Caltex Riau's career center in managing job postings, applications, and the recruitment process for students and alumni. The project was developed by a team following the Scrum methodology, from requirement analysis through deployment.
+Sumatra Career Centre is a web-based platform built to support Politeknik Caltex Riau's career center in managing job postings, applications, career development classes, and the recruitment process for students and alumni. The project was developed by a team following the Scrum methodology, from requirement analysis through deployment.
 
 ---
 
 ## 🛠️ Tech Stack
 
-**Frontend**
-- React
-- Vite
-
-**Backend**
-- Laravel (PHP)
+**Application**
+- Laravel (PHP) — backend & server-rendered views (Blade)
+- Vite — asset bundling (CSS & JS)
 
 **Database**
 - MySQL
@@ -36,7 +33,9 @@ Sumatra Career Centre is a web-based platform built to support Politeknik Caltex
 
 - Job and internship listing management
 - Application submission and status tracking
-- Admin panel for managing job postings and applicants
+- Career Development module (classes, lessons, video content, enrollment & progress tracking)
+- Article/blog management
+- Admin panel for managing job postings, applicants, and career development content
 - User authentication and account management
 
 ---
@@ -49,29 +48,41 @@ Sumatra Career Centre is a web-based platform built to support Politeknik Caltex
 - Node.js & npm
 - MySQL
 
-### Backend (Laravel)
+### Setup
 
 ```bash
 git clone https://github.com/username/sumatra-career-centre.git
 cd sumatra-career-centre
 
+# Install PHP dependencies
 composer install
+
+# Install frontend dependencies (CSS/JS assets, compiled via Vite)
+npm install
+
+# Environment setup
 cp .env.example .env
 php artisan key:generate
 
 # Configure your database settings in the .env file
 php artisan migrate --seed
+```
 
+### Running the App
+
+This project needs **two processes running at the same time**, each in its own terminal:
+
+```bash
+# Terminal 1 — compile & watch frontend assets (CSS/JS) via Vite
+npm run dev
+```
+
+```bash
+# Terminal 2 — run the Laravel app
 php artisan serve
 ```
 
-### Frontend (React + Vite)
-
-```bash
-cd frontend
-npm install
-npm run dev
-```
+Once both are running, open the app at `http://localhost:8000`.
 
 ---
 
