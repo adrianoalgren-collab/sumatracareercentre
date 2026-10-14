@@ -68,6 +68,15 @@ php artisan key:generate
 php artisan migrate --seed
 ```
 
+### 🔐 Initial Admin Login
+
+After completing the setup, use the following credentials to log in to the admin account:
+
+- **Email:** `admin@scc.com`
+- **Password:** `admin123`
+
+> **Note:** These credentials work only if the initial admin account has been created in the database through the project's seeder or another setup process.
+
 ### Running the App
 
 This project needs **two processes running at the same time**, each in its own terminal:
